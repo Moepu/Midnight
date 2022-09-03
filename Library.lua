@@ -21,7 +21,7 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = CoreGui
 
 if syn then
-    syn.protect_gui(screen)
+    syn.protect_gui(ScreenGui)
 elseif isourclosure then
     ScreenGui.Parent = gethui()
 end
