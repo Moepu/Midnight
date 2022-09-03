@@ -480,7 +480,6 @@ end
 
 function Functions:AddDropdown(Name, Info, Function)
     local Dropdown = {
-        Default = Info.Default,
         Values = Info.Values,
         Value = Info.Multi and {},
         Multi = Info.Multi,
@@ -855,20 +854,20 @@ function Functions:AddDropdown(Name, Info, Function)
     Dropdown:SetValues()
     Dropdown:Display()
 
-    if Dropdown.Default then
+    if Info.Default then
         if Dropdown.Multi then
-            if type(Dropdown.Default) == "table" then
-                for _, Index in Dropdown.Default do
+            if type(Info.Default) == "table" then
+                for _, Index in Info.Default do
                     Dropdown.Value[Dropdown.Values[Index]] = true
                 end
             else
-                Dropdown.Value[Dropdown.Values[Dropdown.Default]] = true
+                Dropdown.Value[Dropdown.Values[Info.Default]] = true
             end
         else
-            if type(Dropdown.Default) == "table" then
-                Dropdown.Value = Dropdown.Values[Dropdown.Default[1]]
+            if type(Info.Default) == "table" then
+                Dropdown.Value = Dropdown.Values[Info.Default[1]]
             else
-                Dropdown.Value = Dropdown.Values[Dropdown.Default]
+                Dropdown.Value = Dropdown.Values[Info.Default]
             end
         end
 
