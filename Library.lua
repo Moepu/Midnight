@@ -983,6 +983,10 @@ function Functions:AddInput(Name, Info, Function)
         Input.Value = Text
         InputBox.Text = Text
         Input:Display()
+                                                                
+        if Function then
+            Function()
+        end
     end
     
     function Input:Display()
