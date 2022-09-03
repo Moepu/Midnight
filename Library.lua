@@ -7,7 +7,7 @@ local Library = {
 -- [[ Locals ]] --
 ---------------------
 
-local CoreGui
+local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService('UserInputService')
 local TweenService = game:GetService('TweenService')
 local CoreGui = game:GetService('CoreGui')
@@ -19,6 +19,12 @@ local Mouse = LocalPlayer:GetMouse()
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = CoreGui
+
+if syn then
+    syn.protect_gui(screen)
+elseif isourclosure then
+    ScreenGui.Parent = gethui()
+end
 
 ---------------------
 -- [[ Functions ]] --
