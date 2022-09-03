@@ -18,7 +18,13 @@ local Mouse = LocalPlayer:GetMouse()
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
+ScreenGui.Parent = CoreGui
+
+if syn then
+    syn.protect_gui(ScreenGui)
+elseif isourclosure then
+    ScreenGui.Parent = gethui()
+end
 
 ---------------------
 -- [[ Functions ]] --
@@ -857,7 +863,7 @@ function Functions:AddDropdown(Name, Info, Function)
     if Info.Default then
         if Dropdown.Multi then
             if type(Info.Default) == "table" then
-                for _, Index in Info.Default do
+                for _, Index in next, Info.Default do
                     Dropdown.Value[Dropdown.Values[Index]] = true
                 end
             else
@@ -1658,6 +1664,11 @@ function Library:CreateWindow(...)
         ClipsDescendants = true,
         ZIndex = 1,
         Parent = ScreenGui,
+    })
+
+    local WindowCorner = Library:Create('UICorner', {
+        CornerRadius = UDim.new(0.075, 0),
+        Parent = WindowFrame,
     })
 
     -- Tabs --
