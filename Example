@@ -1,0 +1,79 @@
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/Nexilist/Midnight/main/Library.lua'))()
+
+local Window = Library:CreateWindow({Center = true})
+
+for i = 1, 2 do
+    local Tab = Window:AddTab("Test", "rbxassetid://6523858394", "Description")
+
+    local Button = Tab:AddButton("Test Button", function()
+        warn("Button clicked")
+    end)
+
+    local Toggle = Tab:AddToggle("Test Toggle", false, function()
+        warn("Toggle Button changed")
+    end)
+
+    local ToggleAndInput = Tab:AddToggleAndInput("Test Toggle and TextBox", {
+        BoolDefault = true,
+        InputDefault = "Test",
+        Numeric = false,
+        MinLength = 1,
+        MaxLength = 8,
+        Finished = false,
+    }, function()
+        warn("Test Toggle and TextBox changed")
+    end)
+
+    local Dropdown = Tab:AddDropdown("Test Dropdown", {
+        Values = {"Selection 1", "Selection 2", "Selection 3", "Selection 4", "Selection 5"},
+        Default = 1,
+        Multi = false,
+        AllowNull = false,
+        MaxItems = 8
+    }, function()
+        warn("Dropdown changed")
+    end)
+
+    local MultiDropdown = Tab:AddDropdown("Test Multi Dropdown", {
+        Values = {"Selection 1", "Selection 2", "Selection 3", "Selection 4", "Selection 5"},
+        Multi = true,
+        Default = {1, 3},
+        MaxShow = 3,
+        AllowNull = false,
+        MaxItems = 8
+    }, function()
+        warn("Multi Dropdown changed")
+    end)
+
+    local Input = Tab:AddInput("Test Input", {
+        Default = "Test",
+        Numeric = false,
+        MinLength = 1,
+        MaxLength = 8,
+        Finished = false,
+    }, function()
+        warn("Input changed")
+    end)
+
+    local Slider = Tab:AddSlider("Test Slider", {
+        Default = 10,
+        Min = 0,
+        Max = 50,
+        Rounding = 0,
+        Suffix = "m",
+    }, function()
+        warn("Slider changed")
+    end)
+
+    local Keypicker = Tab:AddKeybindPicker("Test Keypicker", {
+        Default = "MB1"
+    }, function()
+        warn("Keypicker changed")
+    end)
+
+    local ColorPicker = Tab:AddColorPicker("Test Color Picker", {
+        Default = Color3.fromRGB(255, 255, 255)
+    }, function()
+        warn("Color Picker changed")
+    end)
+end
