@@ -1666,11 +1666,6 @@ function Library:CreateWindow(...)
         Parent = ScreenGui,
     })
 
-    local WindowCorner = Library:Create('UICorner', {
-        CornerRadius = UDim.new(0.075, 0),
-        Parent = WindowFrame,
-    })
-
     -- Tabs --
 
     local TabsList = Library:Create('ScrollingFrame', {
