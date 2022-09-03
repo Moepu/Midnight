@@ -26,6 +26,7 @@ elseif isourclosure then
     ScreenGui.Parent = gethui()
 end
 
+
 ---------------------
 -- [[ Functions ]] --
 ---------------------
@@ -104,7 +105,7 @@ function Functions:AddButton(Text, Function)
 
     local ButtonFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -125,7 +126,7 @@ function Functions:AddButton(Text, Function)
         AnchorPoint = Vector2.new(1, 0.5),
         BackgroundColor3 = Color3.fromRGB(112, 183, 250),
         Size = UDim2.new(0, 40, 0, 40),
-        Position = UDim2.new(0.975, 0, 0.5, 0),
+        Position = UDim2.new(0.97, 0, 0.5, 0),
         Image = "rbxassetid://5771838357",
         ZIndex = 1,
         Parent = ButtonFrame,
@@ -154,8 +155,8 @@ function Functions:AddButton(Text, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Text or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -195,7 +196,7 @@ function Functions:AddToggle(Name, Default, Function)
 
     local ToggleFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -214,8 +215,8 @@ function Functions:AddToggle(Name, Default, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -238,7 +239,7 @@ function Functions:AddToggle(Name, Default, Function)
         BackgroundTransparency = 1,
         BackgroundColor3 = Color3.fromRGB(96, 175, 250),
         Size = UDim2.fromOffset(30, 30),
-        Position = UDim2.fromScale(0.035, 0.5),
+        Position = UDim2.fromScale(0.045, 0.5),
         Text = "",
         Parent = ToggleFrame,
     })
@@ -310,7 +311,7 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 
     local ToggleFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -329,8 +330,8 @@ function Functions:AddToggleAndInput(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -353,7 +354,7 @@ function Functions:AddToggleAndInput(Name, Info, Function)
         BackgroundTransparency = 1,
         BackgroundColor3 = Color3.fromRGB(96, 175, 250),
         Size = UDim2.fromOffset(30, 30),
-        Position = UDim2.fromScale(0.035, 0.5),
+        Position = UDim2.fromScale(0.045, 0.5),
         Text = "",
         Parent = ToggleFrame,
     })
@@ -384,7 +385,7 @@ function Functions:AddToggleAndInput(Name, Info, Function)
         BackgroundTransparency = 1,
         Size = UDim2.fromOffset(130, 40),
         PlaceholderColor3 = Color3.fromRGB(178, 178, 178),
-        Position = UDim2.fromScale(0.828, 0.51),
+        Position = UDim2.fromScale(0.77, 0.51),
         Text = "",
         ClearTextOnFocus = false,
         TextColor3 = Color3.fromRGB(235, 235, 235),
@@ -498,7 +499,7 @@ function Functions:AddDropdown(Name, Info, Function)
 
     local DropdownFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -517,8 +518,8 @@ function Functions:AddDropdown(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -595,12 +596,14 @@ function Functions:AddDropdown(Name, Info, Function)
     local DropdownValue = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 350, 0, 50),
-        Position = UDim2.new(0.515, 0, 0.5, 0),
+        Size = UDim2.new(0, 222, 0, 50),
+        Position = UDim2.new(0.525, 0, 0.51, 0),
         Text = "...",
         TextColor3 = Color3.fromRGB(208, 208, 208),
-        TextScaled = true,
         RichText = true,
+        TextTruncate = Enum.TextTruncate.AtEnd,
+        TextSize = 18,
+        TextWrapped = true,
         TextXAlignment = Enum.TextXAlignment.Right,
         Font = Enum.Font.GothamBold,
         ZIndex = 1,
@@ -842,17 +845,29 @@ function Functions:AddDropdown(Name, Info, Function)
         end
     end)
 
+    local function ClosesIfOutsideOfFrame()
+        local AbsPos, AbsSize = DropdownHolder.AbsolutePosition, DropdownHolder.AbsoluteSize
+        local ButtonPos, ButtonSize = DropdownButton.AbsolutePosition, DropdownButton.AbsoluteSize
+
+        if Mouse.X < AbsPos.X or Mouse.X > AbsPos.X + AbsSize.X
+            or Mouse.Y < (AbsPos.Y) or Mouse.Y > AbsPos.Y + AbsSize.Y then
+            if Mouse.X < ButtonPos.X or Mouse.X > ButtonPos.X + ButtonSize.X
+                or Mouse.Y < (ButtonPos.Y) or Mouse.Y > ButtonPos.Y + ButtonSize.Y then
+                Dropdown:CloseDropdown()
+            end
+        end
+    end
+
     UserInputService.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local AbsPos, AbsSize = DropdownHolder.AbsolutePosition, DropdownHolder.AbsoluteSize
-            local ButtonPos, ButtonSize = DropdownButton.AbsolutePosition, DropdownButton.AbsoluteSize
-
-            if Mouse.X < AbsPos.X or Mouse.X > AbsPos.X + AbsSize.X
-                or Mouse.Y < (AbsPos.Y) or Mouse.Y > AbsPos.Y + AbsSize.Y then
-                if Mouse.X < ButtonPos.X or Mouse.X > ButtonPos.X + ButtonSize.X
-                    or Mouse.Y < (ButtonPos.Y) or Mouse.Y > ButtonPos.Y + ButtonSize.Y then
-                    Dropdown:CloseDropdown()
-                end
+            ClosesIfOutsideOfFrame()
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(Input)
+        if DropdownHolder.Visible then
+            if Input.UserInputType == Enum.UserInputType.MouseWheel then
+                ClosesIfOutsideOfFrame()
             end
         end
     end)
@@ -897,7 +912,7 @@ function Functions:AddInput(Name, Info, Function)
 
     local InputFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -916,8 +931,8 @@ function Functions:AddInput(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -940,7 +955,7 @@ function Functions:AddInput(Name, Info, Function)
         BackgroundTransparency = 1,
         Size = UDim2.fromOffset(130, 40),
         PlaceholderColor3 = Color3.fromRGB(178, 178, 178),
-        Position = UDim2.fromScale(0.828, 0.51),
+        Position = UDim2.fromScale(0.77, 0.51),
         Text = "",
         ClearTextOnFocus = false,
         TextColor3 = Color3.fromRGB(235, 235, 235),
@@ -1030,7 +1045,7 @@ function Functions:AddSlider(Name, Info, Function)
 
     local SliderFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -1049,8 +1064,8 @@ function Functions:AddSlider(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -1123,7 +1138,7 @@ function Functions:AddSlider(Name, Info, Function)
         BackgroundTransparency = 1,
         Size = UDim2.fromOffset(89, 50),
         PlaceholderColor3 = Color3.fromRGB(178, 178, 178),
-        Position = UDim2.fromScale(0.6275, 0.51),
+        Position = UDim2.fromScale(0.505, 0.51),
         Text = "",
         TextColor3 = Color3.fromRGB(235, 235, 235),
         TextScaled = true,
@@ -1235,7 +1250,7 @@ function Functions:AddKeybindPicker(Name, Info, Function)
 
     local KeybindFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -1254,8 +1269,8 @@ function Functions:AddKeybindPicker(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -1280,7 +1295,7 @@ function Functions:AddKeybindPicker(Name, Info, Function)
         BackgroundTransparency = 1.000,
         BorderColor3 = Color3.fromRGB(27, 42, 53),
         BorderSizePixel = 0,
-        Position = UDim2.new(0.828424335, 0, 0.5, 0),
+        Position = UDim2.new(0.755, 0, 0.5, 0),
         Selectable = false,
         Size = UDim2.new(0, 130, 0, 40),
         Font = Enum.Font.GothamBold,
@@ -1378,7 +1393,7 @@ function Functions:AddColorPicker(Name, Info, Function)
 
     local ColorPickerFrame = Library:Create('Frame', {
         BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, 76),
+        Size = UDim2.new(1, 0, 0, 77),
         ZIndex = 1,
         LayoutOrder = #Container:GetChildren() + 1,
         Parent = Container,
@@ -1397,8 +1412,8 @@ function Functions:AddColorPicker(Name, Info, Function)
     local Option = Library:Create('TextLabel', {
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
-        Size = UDim2.new(0, 368, 0, 50),
-        Position = UDim2.new(0.095, 0, 0.5, 0),
+        Size = UDim2.new(0, 250, 0, 50),
+        Position = UDim2.new(0.125, 0, 0.5, 0),
         Text = Name or "Empty",
         TextColor3 = Color3.fromRGB(208, 208, 208),
         TextScaled = true,
@@ -1420,7 +1435,7 @@ function Functions:AddColorPicker(Name, Info, Function)
         BackgroundTransparency = 1,
         AnchorPoint = Vector2.new(0, 0.5),
         Size = UDim2.new(0, 125, 0, 50),
-        Position = UDim2.new(0.77, 0, 0.5, 0),
+        Position = UDim2.new(0.7, 0, 0.5, 0),
         Text = "",
         TextColor3 = Color3.fromRGB(126, 230, 250),
         TextScaled = true,
@@ -1442,7 +1457,7 @@ function Functions:AddColorPicker(Name, Info, Function)
         AnchorPoint = Vector2.new(1, 0.5),
         BackgroundColor3 = Color3.fromRGB(126, 230, 250),
         BorderSizePixel = 0,
-        Position = UDim2.new(0.963, 0, 0.5, 0),
+        Position = UDim2.new(0.955, 0, 0.5, 0),
         Size = UDim2.fromOffset(30, 30),
         Text = "",
         Parent = ColorPickerFrame,
@@ -1578,7 +1593,7 @@ function Functions:AddColorPicker(Name, Info, Function)
                 ColorPicker.Vibrancy = 1 - ((MouseY - MinY) / (MaxY - MinY))
                 ColorPicker:Display()
 
-                RenderStepped:Wait()
+                RunService.Heartbeat:Wait()
             end
         end
     end)
@@ -1659,7 +1674,7 @@ function Library:CreateWindow(...)
         BackgroundColor3 = Color3.fromRGB(27, 28, 30),
         BorderSizePixel = 0,
         Position = Config.Position,
-        Size = UDim2.new(0, 1000, 0, 615),
+        Size = UDim2.new(0, 750, 0, 445),
         Visible = true,
         ClipsDescendants = true,
         ZIndex = 1,
@@ -1672,7 +1687,7 @@ function Library:CreateWindow(...)
         BackgroundColor3 = Color3.fromRGB(45, 46, 49),
         BorderSizePixel = 0,
         Position = UDim2.new(0, 0, 0, 0),
-        Size = UDim2.new(0, 110, 1, 0),
+        Size = UDim2.new(0.147, 0, 1, 0),
         Visible = true,
         ClipsDescendants = true,
         ZIndex = 1,
@@ -1704,7 +1719,7 @@ function Library:CreateWindow(...)
     local Header = Library:Create('Frame', {
         BorderSizePixel = 0,
         Position = UDim2.new(0, 109, 0, 0),
-        Size = UDim2.new(0, 890, 0, 82),
+        Size = UDim2.new(0.855, 0, 0.135, 0),
         Visible = true,
         BackgroundTransparency = 1,
         ClipsDescendants = true,
@@ -1715,8 +1730,8 @@ function Library:CreateWindow(...)
     local Separator = Library:Create('Frame', {
         BackgroundColor3 = Color3.fromRGB(41, 42, 45),
         AnchorPoint = Vector2.new(1, 0.5),
-        Position = UDim2.new(0.9, 0, 0.5, 0),
-        Size = UDim2.new(0, 3, 0, 30),
+        Position = UDim2.new(0.875, 0, 0.5, 0),
+        Size = UDim2.new(0.005, 0, 0.5, 0),
         Visible = true,
         BackgroundTransparency = 0,
         BorderSizePixel = 0,
@@ -1726,14 +1741,13 @@ function Library:CreateWindow(...)
     })
 
     local Toggle = Library:Create('ImageButton', {
-        BackgroundColor3 = Color3.fromRGB(96, 175, 250),
+        BackgroundColor3 = Color3.fromRGB(96, 175, 255),
         AnchorPoint = Vector2.new(1, 0.5),
-        Position = UDim2.new(0.98, 0, 0.5, 0),
-        Size = UDim2.new(0, 50, 0, 50),
+        Position = UDim2.new(0.97, 0, 0.5, 0),
+        Size = UDim2.new(0.062, 0, 0.667, 0),
         Visible = true,
         BackgroundTransparency = 1,
-        Image = "rbxassetid://4504304159",
-        ImageColor3 = Color3.fromRGB(96, 175, 250),
+        AutoButtonColor = false,
         ImageTransparency = 1,
         BorderSizePixel = 0,
         ClipsDescendants = false,
@@ -1744,7 +1758,7 @@ function Library:CreateWindow(...)
     local ToggleIcon = Library:Create('ImageLabel', {
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.new(0, 50, 0, 50),
+        Size = UDim2.new(1, 0, 1, 0),
         Visible = true,
         BackgroundTransparency = 1,
         Image = "rbxassetid://7436812392",
@@ -1754,11 +1768,16 @@ function Library:CreateWindow(...)
         BorderSizePixel = 0,
         Parent = Toggle,
     })
+    
+    local ToggleCorner = Library:Create('UICorner', {
+        CornerRadius = UDim.new(0.15, 0),
+        Parent = Toggle,
+    })
 
     local TabIcon = Library:Create('ImageLabel', {
         AnchorPoint = Vector2.new(0.5, 0.5),
-        Position = UDim2.new(0.045, 0, 0.5, 0),
-        Size = UDim2.new(0, 40, 0, 40),
+        Position = UDim2.new(0.065, 0, 0.5, 0),
+        Size = UDim2.new(0.062, 0, 0.667, 0),
         Visible = true,
         BackgroundTransparency = 1,
         Image = "",
@@ -1771,8 +1790,8 @@ function Library:CreateWindow(...)
 
     local TabTitle = Library:Create('TextLabel', {
         AnchorPoint = Vector2.new(0, 0.5),
-        Position = UDim2.new(0.086, 0, 0.48, 0),
-        Size = UDim2.new(0, 700, 0, 50),
+        Position = UDim2.new(0.115, 0, 0.5, 0),
+        Size = UDim2.new(0.76, 0, 0.75, 0),
         Visible = true,
         Font = Enum.Font.SourceSansBold,
         RichText = true,
@@ -1799,8 +1818,8 @@ function Library:CreateWindow(...)
 
     local ContainerBox = Library:Create('Frame', {
         BorderSizePixel = 0,
-        Position = UDim2.new(0, 109, 0, 81),
-        Size = UDim2.new(0, 890, 0, 533),
+        Position = UDim2.new(0.145, 0, 0.135, 0),
+        Size = UDim2.new(0.855, 0, 0.865, 0),
         Visible = true,
         BackgroundTransparency = 1,
         ClipsDescendants = true,
@@ -1860,8 +1879,8 @@ function Library:CreateWindow(...)
             BackgroundTransparency = 1,
             LayoutOrder = #Window.Tabs + 1,
             BorderSizePixel = 0,
-            Position = UDim2.new(0, 109, 0, 81),
-            Size = UDim2.new(0, 890, 0, 533),
+            Position = UDim2.new(0, 0, 0, 0),
+            Size = UDim2.new(1, 0, 1, 0),
             ClipsDescendants = true,
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             CanvasSize = UDim2.new(0, 0, 0, 0),
@@ -1940,12 +1959,12 @@ function Library:CreateWindow(...)
     end))
 
     Toggle.MouseEnter:Connect(function()
-        TweenService:Create(Toggle, TweenInfo.new(0.2), {ImageTransparency = 0}):Play()
+        TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
         TweenService:Create(ToggleIcon, TweenInfo.new(0.2), {ImageColor3 = Color3.fromRGB(25, 25, 25)}):Play()
     end)
 
     Toggle.MouseLeave:Connect(function()
-        TweenService:Create(Toggle, TweenInfo.new(0.2), {ImageTransparency = 1}):Play()
+        TweenService:Create(Toggle, TweenInfo.new(0.2), {BackgroundTransparency = 1}):Play()
         TweenService:Create(ToggleIcon, TweenInfo.new(0.2), {ImageColor3 = Color3.fromRGB(157, 157, 157)}):Play()
     end)
 
