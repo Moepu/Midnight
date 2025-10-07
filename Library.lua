@@ -116,10 +116,10 @@ function Functions:AddButton(Text, Function)
 
 	local ClickButton = Library:Create('ImageButton', {
 		BackgroundTransparency = 0,
-		AnchorPoint = Vector2.new(0.5, 0.5),
+		AnchorPoint = Vector2.new(1, 0.5),
 		BackgroundColor3 = Color3.fromRGB(112, 183, 250),
 		Size = UDim2.new(0, 30, 0, 30),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
+		Position = UDim2.new(0.97, 0, 0.5, 0),
 		Image = "rbxassetid://5659139479",
 		ZIndex = 1,
 		Parent = ButtonFrame,
