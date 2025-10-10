@@ -18,7 +18,7 @@ local Mouse = LocalPlayer:GetMouse()
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = gethui()
-ScreenGui.Name = "FuckNiggers"
+ScreenGui.Name = "Huh"
 
 ---------------------
 -- [[ Functions ]] --
