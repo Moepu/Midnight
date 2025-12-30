@@ -1,4 +1,6 @@
+local LocalPlayer = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
+local HTTPService = game:GetService("HttpService")
 
 local function GetHUI()
 	local Success, Result = pcall(function()
@@ -8,7 +10,7 @@ local function GetHUI()
 	if Success and Result then
 		return Result
 	else
-		return game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+		return LocalPlayer:WaitForChild("PlayerGui")
 	end
 end
 
@@ -456,5 +458,6 @@ ToastManager.Hide = function(self, savedTransparencies)
 	screenGui:Destroy()
 	self.CurrentNotification = nil
 end
+
 
 return ToastManager
