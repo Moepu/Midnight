@@ -1,4 +1,3 @@
-local LocalPlayer = game:GetService("Players").LocalPlayer
 local TweenService = game:GetService("TweenService")
 local HTTPService = game:GetService("HttpService")
 
@@ -10,15 +9,16 @@ local function GetHUI()
 	if Success and Result then
 		return Result
 	else
-		return LocalPlayer:WaitForChild("PlayerGui")
+		return game:GetService("Players").LocalPlayer.PlayerGui
 	end
 end
 
 -- # Toast Notification
+-- # Toast Notification
 local Notification = {}
 
 -- StarterGui.Intro
-Notification["1"] = Instance.new("ScreenGui", GetHUI())
+Notification["1"] = Instance.new("ScreenGui")
 Notification["1"]["Name"] = [[Notification]]
 Notification["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
 Notification["1"]["Enabled"] = false
@@ -404,9 +404,25 @@ ToastManager.Show = function(self, options)
 	)
 
 	sizeTween:Play()
+
+	-- Fade in UIStroke immediately with the size tween
+	local uiStroke = toast:FindFirstChild("UIStroke")
+	if uiStroke then
+		-- Find UIStroke's original transparency from saved data
+		for _, data in ipairs(savedTransparencies) do
+			if data.Element == uiStroke and data.Data.Transparency then
+				local tweenInfo = TweenInfo.new(sizeExpandDuration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+				TweenService:Create(uiStroke, tweenInfo, {
+					Transparency = data.Data.Transparency,
+				}):Play()
+				break
+			end
+		end
+	end
+
 	sizeTween.Completed:Wait()
 
-	-- Step 5: Fade in all elements after size animation starts
+	-- Step 5: Fade in all other elements after size animation completes
 	task.delay(0.1, function()
 		self:FadeIn(savedTransparencies, 0.3)
 	end)
@@ -458,6 +474,5 @@ ToastManager.Hide = function(self, savedTransparencies)
 	screenGui:Destroy()
 	self.CurrentNotification = nil
 end
-
 
 return ToastManager
