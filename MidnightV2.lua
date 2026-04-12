@@ -2317,7 +2317,8 @@ function Functions:AddSection(Name, Info)
 	if self.SectionColumns and #self.SectionColumns > 0 then
 		local LeftColumn = self.SectionColumns[1]
 		local RightColumn = self.SectionColumns[2]
-		local UseTwoColumns = (self._ResolvedColumnCount or 2) > 1 and RightColumn ~= nil
+		local RequestedColumns = self.MaxColumns or self._ResolvedColumnCount or 2
+		local UseTwoColumns = RequestedColumns > 1 and RightColumn ~= nil
 
 		if UseTwoColumns then
 			local LeftHeight = 0
@@ -3213,7 +3214,7 @@ function Library:CreateWindow(...)
 				)
 			else
 				LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
-				RightColumn.Visible = RightColumnLayout.AbsoluteContentSize.Y > 0
+				RightColumn.Visible = false
 				RightColumn.Position = UDim2.fromOffset(
 					Config.ContentPadding,
 					Config.ContentPadding + LeftColumnLayout.AbsoluteContentSize.Y + Config.SectionSpacing
@@ -3253,7 +3254,7 @@ function Library:CreateWindow(...)
 		Tab.DefaultSize = InitialSize
 		Tab.Container = Container
 		Tab.SectionColumns = { LeftColumn, RightColumn }
-		Tab._ResolvedColumnCount = 2
+		Tab._ResolvedColumnCount = Tab.MaxColumns or 2
 		Tab.RefreshTheme = function()
 			RefreshTabIconColor(true)
 		end
