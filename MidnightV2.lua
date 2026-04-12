@@ -3222,7 +3222,7 @@ function Library:CreateWindow(...)
 				)
 			else
 				LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
-				RightColumn.Visible = false
+				RightColumn.Visible = true
 				RightColumn.Position = UDim2.fromOffset(
 					Config.ContentPadding,
 					Config.ContentPadding + LeftColumnLayout.AbsoluteContentSize.Y + Config.SectionSpacing
