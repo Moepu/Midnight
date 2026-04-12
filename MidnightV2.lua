@@ -14,6 +14,7 @@ local Library = {
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
 local RenderStepped = RunService.RenderStepped
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
@@ -21,7 +22,7 @@ local HTTPService = game:GetService("HttpService")
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.Parent = gethui() or game:GetService("CoreGui")
 ScreenGui.Name = HTTPService:GenerateGUID(false)
 
 local Theme = {
@@ -45,6 +46,243 @@ local Theme = {
 		Enum.FontStyle.Normal
 	),
 }
+
+local ThemePresetFile = "MidnightTheme.json"
+local ThemePresets = {
+	["Lavender Slate"] = {
+		Accent = Color3.fromRGB(133, 118, 224),
+		AccentDark = Color3.fromRGB(92, 80, 176),
+		AccentSoft = Color3.fromRGB(190, 181, 245),
+		Checkmark = Color3.fromRGB(251, 249, 255),
+		Surface0 = Color3.fromRGB(238, 236, 245),
+		Surface1 = Color3.fromRGB(246, 244, 251),
+		Surface2 = Color3.fromRGB(225, 220, 237),
+		Surface3 = Color3.fromRGB(202, 196, 220),
+		TabBar = Color3.fromRGB(214, 208, 229),
+		Outline = Color3.fromRGB(155, 146, 179),
+		Text = Color3.fromRGB(44, 40, 60),
+		TextMuted = Color3.fromRGB(98, 92, 123),
+	},
+	["Ocean Mist"] = {
+		Accent = Color3.fromRGB(64, 145, 223),
+		AccentDark = Color3.fromRGB(42, 105, 173),
+		AccentSoft = Color3.fromRGB(153, 205, 248),
+		Checkmark = Color3.fromRGB(255, 255, 255),
+		Surface0 = Color3.fromRGB(235, 241, 246),
+		Surface1 = Color3.fromRGB(245, 249, 252),
+		Surface2 = Color3.fromRGB(221, 231, 239),
+		Surface3 = Color3.fromRGB(193, 207, 220),
+		TabBar = Color3.fromRGB(214, 225, 235),
+		Outline = Color3.fromRGB(142, 160, 178),
+		Text = Color3.fromRGB(30, 42, 58),
+		TextMuted = Color3.fromRGB(90, 107, 126),
+	},
+	["Matcha Studio"] = {
+		Accent = Color3.fromRGB(90, 158, 120),
+		AccentDark = Color3.fromRGB(63, 116, 87),
+		AccentSoft = Color3.fromRGB(166, 214, 186),
+		Checkmark = Color3.fromRGB(247, 252, 248),
+		Surface0 = Color3.fromRGB(239, 245, 238),
+		Surface1 = Color3.fromRGB(248, 251, 246),
+		Surface2 = Color3.fromRGB(223, 233, 221),
+		Surface3 = Color3.fromRGB(198, 213, 196),
+		TabBar = Color3.fromRGB(214, 226, 212),
+		Outline = Color3.fromRGB(143, 162, 141),
+		Text = Color3.fromRGB(34, 46, 38),
+		TextMuted = Color3.fromRGB(89, 108, 92),
+	},
+	["Midnight Gold"] = {
+		Accent = Color3.fromRGB(224, 177, 77),
+		AccentDark = Color3.fromRGB(173, 131, 45),
+		AccentSoft = Color3.fromRGB(246, 214, 135),
+		Checkmark = Color3.fromRGB(255, 249, 232),
+		Surface0 = Color3.fromRGB(21, 23, 28),
+		Surface1 = Color3.fromRGB(30, 33, 39),
+		Surface2 = Color3.fromRGB(41, 45, 53),
+		Surface3 = Color3.fromRGB(58, 63, 74),
+		TabBar = Color3.fromRGB(16, 18, 22),
+		Outline = Color3.fromRGB(88, 94, 108),
+		Text = Color3.fromRGB(241, 237, 226),
+		TextMuted = Color3.fromRGB(178, 172, 156),
+	},
+	["Cobalt Noir"] = {
+		Accent = Color3.fromRGB(77, 132, 255),
+		AccentDark = Color3.fromRGB(49, 91, 201),
+		AccentSoft = Color3.fromRGB(147, 185, 255),
+		Checkmark = Color3.fromRGB(244, 248, 255),
+		Surface0 = Color3.fromRGB(16, 19, 27),
+		Surface1 = Color3.fromRGB(23, 28, 38),
+		Surface2 = Color3.fromRGB(32, 39, 52),
+		Surface3 = Color3.fromRGB(47, 56, 72),
+		TabBar = Color3.fromRGB(12, 15, 22),
+		Outline = Color3.fromRGB(76, 89, 111),
+		Text = Color3.fromRGB(235, 241, 250),
+		TextMuted = Color3.fromRGB(154, 165, 183),
+	},
+	["Rose Quartz"] = {
+		Accent = Color3.fromRGB(225, 118, 159),
+		AccentDark = Color3.fromRGB(177, 82, 121),
+		AccentSoft = Color3.fromRGB(246, 191, 211),
+		Checkmark = Color3.fromRGB(255, 247, 250),
+		Surface0 = Color3.fromRGB(247, 239, 243),
+		Surface1 = Color3.fromRGB(252, 246, 248),
+		Surface2 = Color3.fromRGB(238, 223, 229),
+		Surface3 = Color3.fromRGB(219, 198, 207),
+		TabBar = Color3.fromRGB(230, 215, 222),
+		Outline = Color3.fromRGB(175, 145, 158),
+		Text = Color3.fromRGB(71, 45, 57),
+		TextMuted = Color3.fromRGB(123, 91, 104),
+	},
+	["Amber Dusk"] = {
+		Accent = Color3.fromRGB(232, 145, 74),
+		AccentDark = Color3.fromRGB(181, 101, 42),
+		AccentSoft = Color3.fromRGB(247, 201, 153),
+		Checkmark = Color3.fromRGB(255, 248, 239),
+		Surface0 = Color3.fromRGB(246, 238, 230),
+		Surface1 = Color3.fromRGB(251, 245, 239),
+		Surface2 = Color3.fromRGB(236, 222, 210),
+		Surface3 = Color3.fromRGB(214, 194, 177),
+		TabBar = Color3.fromRGB(227, 212, 198),
+		Outline = Color3.fromRGB(170, 145, 126),
+		Text = Color3.fromRGB(68, 47, 33),
+		TextMuted = Color3.fromRGB(120, 97, 80),
+	},
+	["Frostbyte"] = {
+		Accent = Color3.fromRGB(87, 204, 217),
+		AccentDark = Color3.fromRGB(49, 149, 163),
+		AccentSoft = Color3.fromRGB(171, 236, 242),
+		Checkmark = Color3.fromRGB(245, 254, 255),
+		Surface0 = Color3.fromRGB(233, 244, 247),
+		Surface1 = Color3.fromRGB(242, 249, 251),
+		Surface2 = Color3.fromRGB(218, 232, 236),
+		Surface3 = Color3.fromRGB(190, 208, 214),
+		TabBar = Color3.fromRGB(208, 223, 228),
+		Outline = Color3.fromRGB(136, 159, 168),
+		Text = Color3.fromRGB(34, 54, 60),
+		TextMuted = Color3.fromRGB(88, 111, 118),
+	},
+	["Crimson Velvet"] = {
+		Accent = Color3.fromRGB(214, 79, 102),
+		AccentDark = Color3.fromRGB(158, 48, 68),
+		AccentSoft = Color3.fromRGB(241, 153, 170),
+		Checkmark = Color3.fromRGB(255, 243, 246),
+		Surface0 = Color3.fromRGB(31, 20, 26),
+		Surface1 = Color3.fromRGB(40, 27, 33),
+		Surface2 = Color3.fromRGB(54, 37, 45),
+		Surface3 = Color3.fromRGB(74, 51, 60),
+		TabBar = Color3.fromRGB(24, 16, 21),
+		Outline = Color3.fromRGB(100, 74, 84),
+		Text = Color3.fromRGB(247, 232, 236),
+		TextMuted = Color3.fromRGB(182, 154, 162),
+	},
+	["Sakura Night"] = {
+		Accent = Color3.fromRGB(255, 150, 196),
+		AccentDark = Color3.fromRGB(201, 106, 149),
+		AccentSoft = Color3.fromRGB(255, 209, 227),
+		Checkmark = Color3.fromRGB(255, 245, 250),
+		Surface0 = Color3.fromRGB(22, 20, 29),
+		Surface1 = Color3.fromRGB(30, 27, 39),
+		Surface2 = Color3.fromRGB(42, 38, 54),
+		Surface3 = Color3.fromRGB(60, 54, 77),
+		TabBar = Color3.fromRGB(17, 15, 23),
+		Outline = Color3.fromRGB(92, 84, 112),
+		Text = Color3.fromRGB(245, 236, 242),
+		TextMuted = Color3.fromRGB(178, 166, 178),
+	},
+	["Solarized Sand"] = {
+		Accent = Color3.fromRGB(198, 141, 71),
+		AccentDark = Color3.fromRGB(148, 101, 45),
+		AccentSoft = Color3.fromRGB(229, 196, 142),
+		Checkmark = Color3.fromRGB(255, 252, 242),
+		Surface0 = Color3.fromRGB(244, 240, 225),
+		Surface1 = Color3.fromRGB(250, 247, 236),
+		Surface2 = Color3.fromRGB(232, 225, 202),
+		Surface3 = Color3.fromRGB(210, 200, 173),
+		TabBar = Color3.fromRGB(223, 214, 190),
+		Outline = Color3.fromRGB(163, 149, 117),
+		Text = Color3.fromRGB(77, 69, 47),
+		TextMuted = Color3.fromRGB(124, 114, 88),
+	},
+	["Mint Circuit"] = {
+		Accent = Color3.fromRGB(74, 214, 168),
+		AccentDark = Color3.fromRGB(42, 163, 124),
+		AccentSoft = Color3.fromRGB(164, 242, 214),
+		Checkmark = Color3.fromRGB(240, 255, 249),
+		Surface0 = Color3.fromRGB(18, 26, 24),
+		Surface1 = Color3.fromRGB(26, 36, 33),
+		Surface2 = Color3.fromRGB(36, 49, 45),
+		Surface3 = Color3.fromRGB(52, 68, 62),
+		TabBar = Color3.fromRGB(14, 20, 19),
+		Outline = Color3.fromRGB(78, 102, 94),
+		Text = Color3.fromRGB(230, 243, 238),
+		TextMuted = Color3.fromRGB(153, 171, 164),
+	},
+	["Arctic Bloom"] = {
+		Accent = Color3.fromRGB(137, 122, 255),
+		AccentDark = Color3.fromRGB(94, 81, 204),
+		AccentSoft = Color3.fromRGB(199, 191, 255),
+		Checkmark = Color3.fromRGB(248, 247, 255),
+		Surface0 = Color3.fromRGB(236, 241, 249),
+		Surface1 = Color3.fromRGB(244, 247, 252),
+		Surface2 = Color3.fromRGB(223, 230, 242),
+		Surface3 = Color3.fromRGB(197, 207, 224),
+		TabBar = Color3.fromRGB(213, 221, 235),
+		Outline = Color3.fromRGB(147, 156, 178),
+		Text = Color3.fromRGB(43, 49, 66),
+		TextMuted = Color3.fromRGB(96, 104, 129),
+	},
+	["Copper Smoke"] = {
+		Accent = Color3.fromRGB(190, 115, 87),
+		AccentDark = Color3.fromRGB(141, 79, 57),
+		AccentSoft = Color3.fromRGB(226, 174, 155),
+		Checkmark = Color3.fromRGB(255, 245, 240),
+		Surface0 = Color3.fromRGB(25, 22, 23),
+		Surface1 = Color3.fromRGB(34, 29, 30),
+		Surface2 = Color3.fromRGB(46, 39, 41),
+		Surface3 = Color3.fromRGB(64, 54, 56),
+		TabBar = Color3.fromRGB(20, 18, 18),
+		Outline = Color3.fromRGB(92, 79, 81),
+		Text = Color3.fromRGB(241, 232, 228),
+		TextMuted = Color3.fromRGB(173, 160, 156),
+	},
+}
+
+local function CopyThemeDefinition(Definition)
+	local Copy = {}
+	for Key, Value in next, Definition do
+		Copy[Key] = Value
+	end
+	return Copy
+end
+
+local function LoadSavedThemePreset()
+	if type(isfile) ~= "function" or type(readfile) ~= "function" then
+		return nil
+	end
+
+	local Success, Result = pcall(function()
+		if not isfile(ThemePresetFile) then
+			return nil
+		end
+
+		local Decoded = HttpService:JSONDecode(readfile(ThemePresetFile))
+		if type(Decoded) == "table" then
+			return Decoded.Name
+		end
+	end)
+
+	return Success and Result or nil
+end
+
+local function SaveThemePreset(Name)
+	if type(writefile) ~= "function" then
+		return
+	end
+
+	pcall(function()
+		writefile(ThemePresetFile, HttpService:JSONEncode({ Name = Name }))
+	end)
+end
 
 ---------------------
 -- [[ Functions ]] --
@@ -733,13 +971,21 @@ function Functions:AddToggle(Name, Default, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
+				:Create(
+					ToggleStroke,
+					TweenInfo.new(0.15),
+					{ Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 }
+				)
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
+				:Create(
+					ToggleStroke,
+					TweenInfo.new(0.15),
+					{ Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 }
+				)
 				:Play()
 		end
 	end
@@ -924,13 +1170,21 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
+				:Create(
+					ToggleStroke,
+					TweenInfo.new(0.15),
+					{ Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 }
+				)
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
+				:Create(
+					ToggleStroke,
+					TweenInfo.new(0.15),
+					{ Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 }
+				)
 				:Play()
 		end
 	end
@@ -1022,7 +1276,7 @@ function Functions:AddDropdown(Name, Info, Function)
 		Values = Info.Values,
 		Value = Info.Multi and {},
 		Multi = Info.Multi,
-		MaxShow = Info.MaxShow or 3,
+		MaxShow = Info.Multi and math.max(2, Info.MaxShow or 3) or (Info.MaxShow or 3),
 		AllowNull = Info.AllowNull or false,
 		MaxItems = Info.MaxItems or 5,
 	}
@@ -1044,11 +1298,12 @@ function Functions:AddDropdown(Name, Info, Function)
 	local Option = Library:Create("TextLabel", {
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(0, 0.5),
-		Size = UDim2.new(0, 150, 0, 24),
+		Size = UDim2.new(1, -240, 0, 24),
 		Position = UDim2.new(0, 20, 0.5, 0),
 		Text = Name or "Empty",
 		TextColor3 = Theme.Text,
 		TextSize = 18,
+		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		FontFace = Theme.Font,
 		ZIndex = 1,
@@ -1084,18 +1339,20 @@ function Functions:AddDropdown(Name, Info, Function)
 		Position = UDim2.fromScale(-3.9, 1.1),
 		Parent = ScreenGui,
 	})
+	Library:RegisterThemeBinding(DropdownHolder, "BackgroundColor3", "Surface1")
 
 	local DropdownCorner = Library:Create("UICorner", {
 		CornerRadius = UDim.new(0.05, 0),
 		Parent = DropdownHolder,
 	})
 
-	Library:Create("UIStroke", {
+	local DropdownHolderStroke = Library:Create("UIStroke", {
 		Color = Theme.Outline,
 		Transparency = 0.48,
 		Thickness = 1,
 		Parent = DropdownHolder,
 	})
+	Library:RegisterThemeBinding(DropdownHolderStroke, "Color", "Outline")
 
 	local DropdownList = Library:Create("ScrollingFrame", {
 		BorderSizePixel = 0,
@@ -1130,8 +1387,8 @@ function Functions:AddDropdown(Name, Info, Function)
 	local DropdownValue = Library:Create("TextLabel", {
 		BackgroundTransparency = 1,
 		AnchorPoint = Vector2.new(1, 0.5),
-		Size = UDim2.new(0, 180, 0, 24),
-		Position = UDim2.new(1, -52, 0.5, 0),
+		Size = UDim2.new(0, 150, 0, 24),
+		Position = UDim2.new(1, -48, 0.5, 0),
 		Text = "...",
 		TextColor3 = Theme.TextMuted,
 		RichText = true,
@@ -2379,26 +2636,35 @@ function Functions:AddSection(Name, Info)
 	local Section = {}
 	local SectionLayout
 
+	local SectionBackgroundColor = Info.BackgroundColor3 or Theme.Surface1
+	local SectionStrokeColor = Info.StrokeColor or Theme.Outline
+
 	local SectionFrame = Library:Create("Frame", {
-		BackgroundColor3 = Info.BackgroundColor3 or Theme.Surface1,
+		BackgroundColor3 = SectionBackgroundColor,
 		BorderSizePixel = 0,
 		Size = UDim2.fromOffset(CellWidth, MinSectionHeight),
 		ClipsDescendants = false,
 		LayoutOrder = Library:GetLayoutOrder(Container),
 		Parent = Container,
 	})
+	if Info.BackgroundColor3 == nil then
+		Library:RegisterThemeBinding(SectionFrame, "BackgroundColor3", "Surface1")
+	end
 
 	Library:Create("UICorner", {
 		CornerRadius = UDim.new(0, 6),
 		Parent = SectionFrame,
 	})
 
-	Library:Create("UIStroke", {
-		Color = Info.StrokeColor or Theme.Outline,
+	local SectionStroke = Library:Create("UIStroke", {
+		Color = SectionStrokeColor,
 		Thickness = 1,
 		Transparency = 0.58,
 		Parent = SectionFrame,
 	})
+	if Info.StrokeColor == nil then
+		Library:RegisterThemeBinding(SectionStroke, "Color", "Outline")
+	end
 
 	local SectionTitle = Library:Create("TextLabel", {
 		BackgroundTransparency = 1,
@@ -2571,6 +2837,14 @@ function Library:CreateWindow(...)
 	end
 
 	local ThemeOverrides = {}
+	local SavedThemePreset = LoadSavedThemePreset()
+	local SelectedThemePreset = Config.ThemePreset or SavedThemePreset
+
+	if ThemePresets[SelectedThemePreset] then
+		for Key, Value in next, ThemePresets[SelectedThemePreset] do
+			ThemeOverrides[Key] = Value
+		end
+	end
 
 	if type(Config.Theme) == "table" then
 		for Key, Value in next, Config.Theme do
@@ -2642,12 +2916,15 @@ function Library:CreateWindow(...)
 		_StatusSessionLabel = nil,
 		_StatusDivider = nil,
 		_StatusAccent = nil,
+		_ThemeButton = nil,
+		_ThemePopup = nil,
 	}
 
 	local ToggleSize = math.max(28, Config.HeaderHeight - 20)
 
 	local WindowFrame = Library:Create("Frame", {
 		AnchorPoint = Config.AnchorPoint,
+		BackgroundColor3 = Theme.Surface0,
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = Config.Position,
@@ -2656,19 +2933,6 @@ function Library:CreateWindow(...)
 		ClipsDescendants = false,
 		ZIndex = 1,
 		Parent = ScreenGui,
-	})
-
-	local WindowGroup = Library:Create("CanvasGroup", {
-		AnchorPoint = Vector2.zero,
-		BackgroundColor3 = Theme.Surface0,
-		GroupTransparency = 0,
-		BorderSizePixel = 0,
-		Position = UDim2.fromOffset(0, 0),
-		Size = UDim2.fromScale(1, 1),
-		Visible = true,
-		ClipsDescendants = false,
-		ZIndex = 1,
-		Parent = WindowFrame,
 	})
 
 	Window._WindowFrame = WindowFrame
@@ -2682,17 +2946,23 @@ function Library:CreateWindow(...)
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Size = UDim2.fromScale(1, 1),
-		Parent = WindowGroup,
+		Parent = WindowFrame,
 	})
 
-	Library:Create("UIStroke", {
+	Library:Create("UICorner", {
+		CornerRadius = UDim.new(0, 8),
+		Parent = WindowFrame,
+	})
+
+	local WindowStroke = Library:Create("UIStroke", {
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		LineJoinMode = Enum.LineJoinMode.Miter,
 		Color = ThemeOverrides.BorderColor or Theme.Outline,
 		Transparency = 0.34,
 		Thickness = 1,
-		Parent = WindowGroup,
+		Parent = WindowFrame,
 	})
+	Library:RegisterThemeBinding(WindowStroke, "Color", "Outline")
 
 	-- Tabs --
 
@@ -2765,7 +3035,10 @@ function Library:CreateWindow(...)
 	Window._HeaderDivider = HeaderDivider
 
 	local ToggleInset = 6 + Config.EdgeInset
-	local SeparatorGap = ToggleInset + ToggleSize + 14
+	local HeaderButtonSize = math.max(30, ToggleSize - 2)
+	local ThemeButtonGap = 16
+	local SeparatorPadding = 8
+	local SeparatorGap = ToggleInset + HeaderButtonSize + SeparatorPadding
 
 	local Separator = Library:Create("Frame", {
 		BackgroundColor3 = Theme.Outline,
@@ -2786,7 +3059,7 @@ function Library:CreateWindow(...)
 		BackgroundColor3 = Theme.Accent,
 		AnchorPoint = Vector2.new(1, 0.5),
 		Position = UDim2.new(1, -ToggleInset, 0.5, 0),
-		Size = UDim2.fromOffset(math.max(30, ToggleSize - 2), math.max(30, ToggleSize - 2)),
+		Size = UDim2.fromOffset(HeaderButtonSize, HeaderButtonSize),
 		Visible = true,
 		BackgroundTransparency = 1,
 		AutoButtonColor = false,
@@ -2798,6 +3071,113 @@ function Library:CreateWindow(...)
 	})
 
 	Window._Toggle = Toggle
+
+	local ThemeButton = Library:Create("ImageButton", {
+		BackgroundColor3 = Theme.Accent,
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -(ToggleInset + HeaderButtonSize + ThemeButtonGap), 0.5, 0),
+		Size = UDim2.fromOffset(HeaderButtonSize, HeaderButtonSize),
+		Visible = true,
+		BackgroundTransparency = 1,
+		AutoButtonColor = false,
+		ImageTransparency = 1,
+		BorderSizePixel = 0,
+		ClipsDescendants = false,
+		ZIndex = 1,
+		Parent = Header,
+	})
+	Window._ThemeButton = ThemeButton
+	Library:RegisterThemeBinding(ThemeButton, "BackgroundColor3", "Accent")
+
+	local ThemeButtonIcon = Library:Create("ImageLabel", {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		Size = UDim2.fromOffset(18, 18),
+		Visible = true,
+		BackgroundTransparency = 1,
+		Image = "rbxassetid://7734053495",
+		ImageColor3 = Theme.TextMuted,
+		ScaleType = Enum.ScaleType.Fit,
+		ClipsDescendants = false,
+		ZIndex = 2,
+		BorderSizePixel = 0,
+		Parent = ThemeButton,
+	})
+	Library:RegisterThemeBinding(ThemeButtonIcon, "ImageColor3", "TextMuted")
+
+	Library:Create("UICorner", {
+		CornerRadius = UDim.new(0.15, 0),
+		Parent = ThemeButton,
+	})
+
+	local ThemePopup = Library:Create("Frame", {
+		Name = "ThemePopup",
+		BackgroundColor3 = Theme.Surface1,
+		BorderSizePixel = 0,
+		Size = UDim2.fromOffset(210, 232),
+		Visible = false,
+		ZIndex = 20,
+		Parent = ScreenGui,
+	})
+	Window._ThemePopup = ThemePopup
+	Library:RegisterThemeBinding(ThemePopup, "BackgroundColor3", "Surface1")
+
+	Library:Create("UICorner", {
+		CornerRadius = UDim.new(0, 10),
+		Parent = ThemePopup,
+	})
+
+	local ThemePopupStroke = Library:Create("UIStroke", {
+		Color = Theme.Outline,
+		Transparency = 0.4,
+		Thickness = 1,
+		Parent = ThemePopup,
+	})
+	Library:RegisterThemeBinding(ThemePopupStroke, "Color", "Outline")
+
+	local ThemePopupTitle = Library:Create("TextLabel", {
+		BackgroundTransparency = 1,
+		Position = UDim2.fromOffset(14, 8),
+		Size = UDim2.new(1, -28, 0, 24),
+		FontFace = Theme.FontSemibold,
+		Text = "Themes",
+		TextColor3 = Theme.Text,
+		TextSize = 18,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ZIndex = 21,
+		Parent = ThemePopup,
+	})
+	Library:RegisterThemeBinding(ThemePopupTitle, "TextColor3", "Text")
+
+	local ThemePopupDivider = Library:Create("Frame", {
+		BackgroundColor3 = Theme.Outline,
+		BackgroundTransparency = 0.5,
+		BorderSizePixel = 0,
+		Position = UDim2.fromOffset(14, 34),
+		Size = UDim2.new(1, -28, 0, 1),
+		ZIndex = 21,
+		Parent = ThemePopup,
+	})
+	Library:RegisterThemeBinding(ThemePopupDivider, "BackgroundColor3", "Outline")
+
+	local ThemeList = Library:Create("ScrollingFrame", {
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Position = UDim2.fromOffset(10, 42),
+		Size = UDim2.new(1, -20, 1, -52),
+		CanvasSize = UDim2.new(0, 0, 0, 0),
+		ScrollBarThickness = 0,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		ZIndex = 21,
+		Parent = ThemePopup,
+	})
+
+	local ThemeListLayout = Library:Create("UIListLayout", {
+		FillDirection = Enum.FillDirection.Vertical,
+		SortOrder = Enum.SortOrder.LayoutOrder,
+		Padding = UDim.new(0, 6),
+		Parent = ThemeList,
+	})
 
 	local ToggleIcon = Library:Create("ImageLabel", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -2913,6 +3293,7 @@ function Library:CreateWindow(...)
 		Parent = StatusBar,
 	})
 	Window._StatusResetLabel = StatusResetLabel
+	Library:RegisterThemeBinding(StatusResetLabel, "TextColor3", "Text")
 
 	local StatusSessionLabel = Library:Create("TextLabel", {
 		BackgroundTransparency = 1,
@@ -2928,6 +3309,7 @@ function Library:CreateWindow(...)
 		Parent = StatusBar,
 	})
 	Window._StatusSessionLabel = StatusSessionLabel
+	Library:RegisterThemeBinding(StatusSessionLabel, "TextColor3", "TextMuted")
 
 	local StatusUptimeLabel = Library:Create("TextLabel", {
 		BackgroundTransparency = 1,
@@ -2943,6 +3325,7 @@ function Library:CreateWindow(...)
 		Parent = StatusBar,
 	})
 	Window._StatusUptimeLabel = StatusUptimeLabel
+	Library:RegisterThemeBinding(StatusUptimeLabel, "TextColor3", "Text")
 
 	local ContainerBoxLayout = Library:Create("UIPageLayout", {
 		EasingDirection = Enum.EasingDirection.Out,
@@ -2977,6 +3360,97 @@ function Library:CreateWindow(...)
 		for _, UpdateFunc in ipairs(Window.ColorUpdateFunctions) do
 			UpdateFunc()
 		end
+	end
+
+	local ThemeOptionButtons = {}
+
+	local function RefreshThemeButtons()
+		for PresetName, Button in next, ThemeOptionButtons do
+			if Button and Button.Parent then
+				local IsActive = PresetName == SelectedThemePreset
+				Button.BackgroundTransparency = IsActive and 0 or 1
+			end
+		end
+	end
+
+	local function ApplyThemePreset(PresetName)
+		local Preset = ThemePresets[PresetName]
+		if not Preset then
+			return
+		end
+
+		SelectedThemePreset = PresetName
+		Library:ApplyTheme(CopyThemeDefinition(Preset))
+		RunColorUpdates()
+		RefreshThemeButtons()
+		SaveThemePreset(PresetName)
+	end
+
+	local function PositionThemePopup()
+		ThemePopup.Position = UDim2.fromOffset(
+			ThemeButton.AbsolutePosition.X - ThemePopup.AbsoluteSize.X + ThemeButton.AbsoluteSize.X,
+			ThemeButton.AbsolutePosition.Y + ThemeButton.AbsoluteSize.Y + 8
+		)
+	end
+
+	local function OpenThemePopup()
+		PositionThemePopup()
+		ThemePopup.Visible = true
+		Library.VisibleFrames[ThemePopup] = true
+	end
+
+	local function CloseThemePopup()
+		ThemePopup.Visible = false
+		Library.VisibleFrames[ThemePopup] = nil
+	end
+
+	for PresetName, _ in next, ThemePresets do
+		local ThemeOptionButton = Library:Create("TextButton", {
+			BackgroundColor3 = Theme.Surface2,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, 0, 0, 34),
+			Text = PresetName,
+			TextColor3 = Theme.Text,
+			TextSize = 16,
+			FontFace = Theme.Font,
+			ZIndex = 22,
+			Parent = ThemeList,
+		})
+		Library:RegisterThemeBinding(ThemeOptionButton, "BackgroundColor3", "Surface2")
+		Library:RegisterThemeBinding(ThemeOptionButton, "TextColor3", "Text")
+
+		Library:Create("UICorner", {
+			CornerRadius = UDim.new(0, 8),
+			Parent = ThemeOptionButton,
+		})
+
+		local ThemeOptionStroke = Library:Create("UIStroke", {
+			Color = Theme.Outline,
+			Transparency = 0.58,
+			Thickness = 1,
+			Parent = ThemeOptionButton,
+		})
+		Library:RegisterThemeBinding(ThemeOptionStroke, "Color", "Outline")
+
+		ThemeOptionButton.MouseEnter:Connect(function()
+			if PresetName ~= SelectedThemePreset then
+				TweenService:Create(ThemeOptionButton, TweenInfo.new(0.15), { BackgroundTransparency = 0.25 }):Play()
+			end
+		end)
+
+		ThemeOptionButton.MouseLeave:Connect(function()
+			if PresetName ~= SelectedThemePreset then
+				TweenService:Create(ThemeOptionButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
+			end
+		end)
+
+		ThemeOptionButton.Activated:Connect(function()
+			ApplyThemePreset(PresetName)
+			CloseThemePopup()
+		end)
+
+		ThemeOptionButtons[PresetName] = ThemeOptionButton
 	end
 
 	local function RegisterTabColorUpdate(Tab)
@@ -3311,10 +3785,10 @@ function Library:CreateWindow(...)
 		return Tab
 	end
 
-		-- Register theme update functions for all window elements
+	-- Register theme update functions for all window elements
 	local function UpdateColors()
 		if Window._WindowFrame then
-			WindowGroup.BackgroundColor3 = Theme.Surface0
+			Window._WindowFrame.BackgroundColor3 = Theme.Surface0
 		end
 		if Window._Header then
 			Window._Header.BackgroundColor3 = Theme.Surface1
@@ -3333,6 +3807,9 @@ function Library:CreateWindow(...)
 		end
 		if Window._Toggle then
 			Window._Toggle.BackgroundColor3 = Theme.Accent
+		end
+		if Window._ThemeButton then
+			Window._ThemeButton.BackgroundColor3 = Theme.Accent
 		end
 		if Window._ToggleIcon then
 			Window._ToggleIcon.ImageColor3 = Theme.TextMuted
@@ -3380,13 +3857,14 @@ function Library:CreateWindow(...)
 
 	-- Call update immediately to apply theme
 	RunColorUpdates()
+	RefreshThemeButtons()
 	UpdateTabsCanvas(#Window.Tabs)
 	Window:SetStatus("Status: --", "Session: --", "--:--:--")
 
 	local ToggleTweenInfo = TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 	local IsWindowAnimating = false
 	local IsWindowOpen = true
-	local ClosedWindowScale = 0.94
+	local ClosedWindowScale = 0.01
 
 	local function CloseVisibleFrames()
 		for Frame in next, Library.VisibleFrames do
@@ -3406,24 +3884,19 @@ function Library:CreateWindow(...)
 
 		if IsWindowOpen then
 			CloseVisibleFrames()
-			TweenService:Create(WindowGroup, ToggleTweenInfo, { GroupTransparency = 1 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = ClosedWindowScale }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
 				WindowFrame.Visible = false
-				WindowGroup.GroupTransparency = 1
 				IsWindowOpen = false
 				IsWindowAnimating = false
 			end)
 		else
 			WindowFrame.Visible = true
-			WindowGroup.GroupTransparency = 1
 			WindowScale.Scale = ClosedWindowScale
-			TweenService:Create(WindowGroup, ToggleTweenInfo, { GroupTransparency = 0 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = 1 }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
-				WindowGroup.GroupTransparency = 0
 				IsWindowOpen = true
 				IsWindowAnimating = false
 			end)
@@ -3447,6 +3920,43 @@ function Library:CreateWindow(...)
 			task.spawn(Library.Toggle)
 		end
 	end))
+
+	Library:GiveSignal(UserInputService.InputBegan:Connect(function(Input)
+		if ThemePopup.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
+			local PopupPos, PopupSize = ThemePopup.AbsolutePosition, ThemePopup.AbsoluteSize
+			local ButtonPos, ButtonSize = ThemeButton.AbsolutePosition, ThemeButton.AbsoluteSize
+			local InPopup = Mouse.X >= PopupPos.X
+				and Mouse.X <= PopupPos.X + PopupSize.X
+				and Mouse.Y >= PopupPos.Y
+				and Mouse.Y <= PopupPos.Y + PopupSize.Y
+			local InButton = Mouse.X >= ButtonPos.X
+				and Mouse.X <= ButtonPos.X + ButtonSize.X
+				and Mouse.Y >= ButtonPos.Y
+				and Mouse.Y <= ButtonPos.Y + ButtonSize.Y
+
+			if not InPopup and not InButton then
+				CloseThemePopup()
+			end
+		end
+	end))
+
+	ThemeButton.MouseEnter:Connect(function()
+		TweenService:Create(ThemeButton, TweenInfo.new(0.2), { BackgroundTransparency = 0 }):Play()
+		TweenService:Create(ThemeButtonIcon, TweenInfo.new(0.2), { ImageColor3 = Theme.Surface0 }):Play()
+	end)
+
+	ThemeButton.MouseLeave:Connect(function()
+		TweenService:Create(ThemeButton, TweenInfo.new(0.2), { BackgroundTransparency = 1 }):Play()
+		TweenService:Create(ThemeButtonIcon, TweenInfo.new(0.2), { ImageColor3 = Theme.TextMuted }):Play()
+	end)
+
+	ThemeButton.Activated:Connect(function()
+		if ThemePopup.Visible then
+			CloseThemePopup()
+		else
+			OpenThemePopup()
+		end
+	end)
 
 	Toggle.MouseEnter:Connect(function()
 		TweenService:Create(Toggle, TweenInfo.new(0.2), { BackgroundTransparency = 0 }):Play()
