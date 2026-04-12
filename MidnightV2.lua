@@ -860,6 +860,8 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 		TextColor3 = Theme.Text,
 		TextSize = 16,
 		FontFace = Theme.FontBold,
+		TextTruncate = Enum.TextTruncate.AtEnd,
+		TextXAlignment = Enum.TextXAlignment.Center,
 		PlaceholderText = "Value",
 		Parent = ToggleFrame,
 	})
@@ -1518,7 +1520,7 @@ function Functions:AddInput(Name, Info, Function)
 		TextColor3 = Theme.Text,
 		TextSize = 16,
 		TextTruncate = Enum.TextTruncate.AtEnd,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Center,
 		FontFace = Theme.FontBold,
 		PlaceholderText = "Value",
 		Parent = InputFrame,
