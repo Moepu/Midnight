@@ -36,11 +36,7 @@ local Theme = {
 	TextMuted = Color3.fromRGB(175, 181, 192),
 	Font = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 	FontBold = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-	FontSemibold = Font.new(
-		"rbxasset://fonts/families/Montserrat.json",
-		Enum.FontWeight.SemiBold,
-		Enum.FontStyle.Normal
-	),
+	FontSemibold = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 }
 
 ---------------------
@@ -859,9 +855,9 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 		ClearTextOnFocus = false,
 		TextColor3 = Theme.Text,
 		TextSize = 16,
-		FontFace = Theme.FontBold,
+		TextAlignment = Enum.TextXAlignment.Center,
 		TextTruncate = Enum.TextTruncate.AtEnd,
-		TextXAlignment = Enum.TextXAlignment.Center,
+		FontFace = Theme.FontBold,
 		PlaceholderText = "Value",
 		Parent = ToggleFrame,
 	})
@@ -1730,6 +1726,8 @@ function Functions:AddSlider(Name, Info, Function)
 		TextColor3 = Theme.Text,
 		TextSize = 15,
 		FontFace = Theme.FontBold,
+		TextAlignment = Enum.TextYAlignment.Center,
+		TextTruncate = Enum.TextTruncate.AtEnd,
 		PlaceholderText = "Value",
 		Parent = SliderFrame,
 	})
@@ -2436,36 +2434,36 @@ function Functions:AddSection(Name, Info)
 		})
 	end
 
-	local function UpdateSectionSize()
-		local ContentHeight = CellHeight
-		local ContentInset = 8
-		local ResolvedWidth = CellWidth
+		local function UpdateSectionSize()
+			local ContentHeight = CellHeight
+			local ContentInset = 8
+			local ResolvedWidth = CellWidth
 
-		if SectionLayout and SectionLayout.AbsoluteContentSize.Y > 0 then
-			ContentHeight = SectionLayout.AbsoluteContentSize.Y
+			if SectionLayout and SectionLayout.AbsoluteContentSize.Y > 0 then
+				ContentHeight = SectionLayout.AbsoluteContentSize.Y
+			end
+
+			if Container and Container.AbsoluteSize.X > 0 then
+				ResolvedWidth = Container.AbsoluteSize.X
+			end
+
+			local PreferredHeight =
+				math.max(MinSectionHeight, HeaderHeight + (SectionPadding * 2) + ContentHeight + ContentInset + 1)
+
+			SectionContainer.Size = UDim2.new(1, -(SectionPadding * 2), 0, ContentHeight + ContentInset)
+			SectionFrame.Size = UDim2.fromOffset(ResolvedWidth, PreferredHeight)
+			SectionFrame:SetAttribute("PreferredHeight", PreferredHeight)
+
+			if self.UpdateLayout then
+				self:UpdateLayout()
+			end
 		end
 
-		if Container and Container.AbsoluteSize.X > 0 then
-			ResolvedWidth = Container.AbsoluteSize.X
-		end
-
-		local PreferredHeight =
-			math.max(MinSectionHeight, HeaderHeight + (SectionPadding * 2) + ContentHeight + ContentInset + 1)
-
-		SectionContainer.Size = UDim2.new(1, -(SectionPadding * 2), 0, ContentHeight + ContentInset)
-		SectionFrame.Size = UDim2.fromOffset(ResolvedWidth, PreferredHeight)
-		SectionFrame:SetAttribute("PreferredHeight", PreferredHeight)
-
-		if self.UpdateLayout then
-			self:UpdateLayout()
-		end
-	end
-
-	SectionContainer.ChildAdded:Connect(UpdateSectionSize)
-	SectionContainer.ChildRemoved:Connect(UpdateSectionSize)
-	SectionLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateSectionSize)
-	Container:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateSectionSize)
-	UpdateSectionSize()
+		SectionContainer.ChildAdded:Connect(UpdateSectionSize)
+		SectionContainer.ChildRemoved:Connect(UpdateSectionSize)
+		SectionLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateSectionSize)
+		Container:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateSectionSize)
+		UpdateSectionSize()
 
 	Section.Container = SectionContainer
 	Section.Frame = SectionFrame
@@ -2633,9 +2631,8 @@ function Library:CreateWindow(...)
 		Parent = WindowFrame,
 	})
 
-	local WindowCanvas = Library:Create("CanvasGroup", {
+	local WindowCanvas = Library:Create("Frame", {
 		BackgroundTransparency = 1,
-		GroupTransparency = 0,
 		BorderSizePixel = 0,
 		Size = UDim2.fromScale(1, 1),
 		Parent = WindowFrame,
@@ -3052,9 +3049,9 @@ function Library:CreateWindow(...)
 
 		-- Container --
 
-		local Container = Library:Create("ScrollingFrame", {
-			BackgroundTransparency = 1,
-			LayoutOrder = ResolvedOrderNumber,
+			local Container = Library:Create("ScrollingFrame", {
+				BackgroundTransparency = 1,
+				LayoutOrder = ResolvedOrderNumber,
 			BorderSizePixel = 0,
 			Position = UDim2.new(0, 0, 0, 0),
 			Size = UDim2.new(1, 0, 1, 0),
@@ -3063,48 +3060,48 @@ function Library:CreateWindow(...)
 			CanvasSize = UDim2.new(0, 0, 0, 0),
 			ScrollBarThickness = 8,
 			ScrollBarImageColor3 = Color3.fromRGB(68, 68, 68),
-			Parent = ContainerBox,
-		})
+				Parent = ContainerBox,
+			})
 
-		local LeftColumn = Library:Create("Frame", {
-			Name = "LeftColumn",
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			Position = UDim2.new(0, Config.ContentPadding, 0, Config.ContentPadding),
-			Size = UDim2.new(0, 240, 0, 0),
-			AutomaticSize = Enum.AutomaticSize.Y,
-			Parent = Container,
-		})
+			local LeftColumn = Library:Create("Frame", {
+				Name = "LeftColumn",
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Position = UDim2.new(0, Config.ContentPadding, 0, Config.ContentPadding),
+				Size = UDim2.new(0, 240, 0, 0),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Parent = Container,
+			})
 
-		local LeftColumnLayout = Library:Create("UIListLayout", {
-			FillDirection = Enum.FillDirection.Vertical,
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			HorizontalAlignment = Enum.HorizontalAlignment.Left,
-			VerticalAlignment = Enum.VerticalAlignment.Top,
-			Padding = UDim.new(0, Config.SectionSpacing),
-			Parent = LeftColumn,
-		})
+			local LeftColumnLayout = Library:Create("UIListLayout", {
+				FillDirection = Enum.FillDirection.Vertical,
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Top,
+				Padding = UDim.new(0, Config.SectionSpacing),
+				Parent = LeftColumn,
+			})
 
-		local RightColumn = Library:Create("Frame", {
-			Name = "RightColumn",
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			Position = UDim2.new(0, Config.ContentPadding, 0, Config.ContentPadding),
-			Size = UDim2.new(0, 240, 0, 0),
-			AutomaticSize = Enum.AutomaticSize.Y,
-			Parent = Container,
-		})
+			local RightColumn = Library:Create("Frame", {
+				Name = "RightColumn",
+				BackgroundTransparency = 1,
+				BorderSizePixel = 0,
+				Position = UDim2.new(0, Config.ContentPadding, 0, Config.ContentPadding),
+				Size = UDim2.new(0, 240, 0, 0),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Parent = Container,
+			})
 
-		local RightColumnLayout = Library:Create("UIListLayout", {
-			FillDirection = Enum.FillDirection.Vertical,
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			HorizontalAlignment = Enum.HorizontalAlignment.Left,
-			VerticalAlignment = Enum.VerticalAlignment.Top,
-			Padding = UDim.new(0, Config.SectionSpacing),
-			Parent = RightColumn,
-		})
+			local RightColumnLayout = Library:Create("UIListLayout", {
+				FillDirection = Enum.FillDirection.Vertical,
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Top,
+				Padding = UDim.new(0, Config.SectionSpacing),
+				Parent = RightColumn,
+			})
 
-		-- Functions --
+			-- Functions --
 
 		function Tab:Show(Instant)
 			for _, ExistingTab in next, Window.Tabs do
@@ -3186,59 +3183,59 @@ function Library:CreateWindow(...)
 			end
 		end)
 
-		local function UpdateGrid()
-			local AvailableWidth = math.max(0, Container.AbsoluteSize.X - (Config.ContentPadding * 2))
-			local MaxColumns = Tab.MaxColumns or 2
-			local Columns = math.min(MaxColumns, (AvailableWidth >= 760) and 2 or 1)
-			local CellWidth = AvailableWidth
+			local function UpdateGrid()
+				local AvailableWidth = math.max(0, Container.AbsoluteSize.X - (Config.ContentPadding * 2))
+				local MaxColumns = Tab.MaxColumns or 2
+				local Columns = math.min(MaxColumns, (AvailableWidth >= 760) and 2 or 1)
+				local CellWidth = AvailableWidth
 
-			if Columns > 1 then
-				CellWidth = math.floor((AvailableWidth - (Config.SectionSpacing * (Columns - 1))) / Columns)
-			end
-
-			Tab._ResolvedColumnCount = Columns
-
-			LeftColumn.Size = UDim2.fromOffset(CellWidth, 0)
-			RightColumn.Size = UDim2.fromOffset(CellWidth, 0)
-
-			if Columns > 1 then
-				LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
-				RightColumn.Visible = true
-				RightColumn.Position =
-					UDim2.fromOffset(Config.ContentPadding + CellWidth + Config.SectionSpacing, Config.ContentPadding)
-
-				Container.CanvasSize = UDim2.new(
-					0,
-					0,
-					0,
-					math.max(LeftColumnLayout.AbsoluteContentSize.Y, RightColumnLayout.AbsoluteContentSize.Y)
-						+ (Config.ContentPadding * 2)
-				)
-			else
-				LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
-				RightColumn.Visible = false
-				RightColumn.Position = UDim2.fromOffset(
-					Config.ContentPadding,
-					Config.ContentPadding + LeftColumnLayout.AbsoluteContentSize.Y + Config.SectionSpacing
-				)
-
-				local TotalHeight = LeftColumnLayout.AbsoluteContentSize.Y
-				if RightColumnLayout.AbsoluteContentSize.Y > 0 then
-					TotalHeight += Config.SectionSpacing + RightColumnLayout.AbsoluteContentSize.Y
+				if Columns > 1 then
+					CellWidth = math.floor((AvailableWidth - (Config.SectionSpacing * (Columns - 1))) / Columns)
 				end
 
-				Container.CanvasSize = UDim2.new(0, 0, 0, TotalHeight + (Config.ContentPadding * 2))
+				Tab._ResolvedColumnCount = Columns
+
+				LeftColumn.Size = UDim2.fromOffset(CellWidth, 0)
+				RightColumn.Size = UDim2.fromOffset(CellWidth, 0)
+
+				if Columns > 1 then
+					LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
+					RightColumn.Visible = true
+					RightColumn.Position =
+						UDim2.fromOffset(Config.ContentPadding + CellWidth + Config.SectionSpacing, Config.ContentPadding)
+
+					Container.CanvasSize = UDim2.new(
+						0,
+						0,
+						0,
+						math.max(LeftColumnLayout.AbsoluteContentSize.Y, RightColumnLayout.AbsoluteContentSize.Y)
+							+ (Config.ContentPadding * 2)
+					)
+				else
+					LeftColumn.Position = UDim2.fromOffset(Config.ContentPadding, Config.ContentPadding)
+					RightColumn.Visible = false
+					RightColumn.Position = UDim2.fromOffset(
+						Config.ContentPadding,
+						Config.ContentPadding + LeftColumnLayout.AbsoluteContentSize.Y + Config.SectionSpacing
+					)
+
+					local TotalHeight = LeftColumnLayout.AbsoluteContentSize.Y
+					if RightColumnLayout.AbsoluteContentSize.Y > 0 then
+						TotalHeight += Config.SectionSpacing + RightColumnLayout.AbsoluteContentSize.Y
+					end
+
+					Container.CanvasSize = UDim2.new(0, 0, 0, TotalHeight + (Config.ContentPadding * 2))
+				end
 			end
-		end
 
-		Container.ChildAdded:Connect(UpdateGrid)
-		Container.ChildRemoved:Connect(UpdateGrid)
-		Container:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateGrid)
-		LeftColumnLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateGrid)
-		RightColumnLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateGrid)
-		UpdateGrid()
+			Container.ChildAdded:Connect(UpdateGrid)
+			Container.ChildRemoved:Connect(UpdateGrid)
+			Container:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateGrid)
+			LeftColumnLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateGrid)
+			RightColumnLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(UpdateGrid)
+			UpdateGrid()
 
-		Tab.UpdateLayout = UpdateGrid
+			Tab.UpdateLayout = UpdateGrid
 
 		TabsList.CanvasSize = UDim2.new(
 			0,
@@ -3252,14 +3249,14 @@ function Library:CreateWindow(...)
 		Tab.Button = TabButton
 		Tab.BaseTabHeight = BaseTabHeight
 		Tab.HoverTabHeight = HoverTabHeight
-		Tab.DefaultPosition = InitialPosition
-		Tab.DefaultSize = InitialSize
-		Tab.Container = Container
-		Tab.SectionColumns = { LeftColumn, RightColumn }
-		Tab._ResolvedColumnCount = Tab.MaxColumns or 2
-		Tab.RefreshTheme = function()
-			RefreshTabIconColor(true)
-		end
+			Tab.DefaultPosition = InitialPosition
+			Tab.DefaultSize = InitialSize
+			Tab.Container = Container
+			Tab.SectionColumns = { LeftColumn, RightColumn }
+			Tab._ResolvedColumnCount = Tab.MaxColumns or 2
+			Tab.RefreshTheme = function()
+				RefreshTabIconColor(true)
+			end
 		Window.Tabs[#Window.Tabs + 1] = Tab
 		RegisterTabColorUpdate(Tab)
 		UpdateTabsCanvas(#Window.Tabs)
@@ -3367,7 +3364,6 @@ function Library:CreateWindow(...)
 
 		if IsWindowOpen then
 			CloseVisibleFrames()
-			TweenService:Create(WindowCanvas, ToggleTweenInfo, { GroupTransparency = 1 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = ClosedWindowScale }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
@@ -3377,8 +3373,6 @@ function Library:CreateWindow(...)
 			end)
 		else
 			WindowFrame.Visible = true
-			WindowCanvas.GroupTransparency = 1
-			TweenService:Create(WindowCanvas, ToggleTweenInfo, { GroupTransparency = 0 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = 1 }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
