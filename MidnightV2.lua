@@ -20,7 +20,7 @@ local Mouse = LocalPlayer:GetMouse()
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = gethui() or game:GetService("CoreGui")
+ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.Name = "Huh"
 
 local Theme = {
