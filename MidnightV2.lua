@@ -17,23 +17,26 @@ local RunService = game:GetService("RunService")
 local RenderStepped = RunService.RenderStepped
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
+local HTTPService = game:GetService("HttpService")
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Parent = game:GetService("CoreGui")
-ScreenGui.Name = "Huh"
+ScreenGui.Name = HTTPService:GenerateGUID(false)
 
 local Theme = {
-	Accent = Color3.fromRGB(82, 163, 255),
-	AccentDark = Color3.fromRGB(52, 118, 201),
-	AccentSoft = Color3.fromRGB(128, 189, 255),
-	Surface0 = Color3.fromRGB(28, 31, 36),
-	Surface1 = Color3.fromRGB(36, 40, 46),
-	Surface2 = Color3.fromRGB(46, 50, 57),
-	Surface3 = Color3.fromRGB(58, 63, 72),
-	Outline = Color3.fromRGB(78, 84, 95),
-	Text = Color3.fromRGB(236, 239, 244),
-	TextMuted = Color3.fromRGB(175, 181, 192),
+	Accent = Color3.fromRGB(133, 118, 224),
+	AccentDark = Color3.fromRGB(92, 80, 176),
+	AccentSoft = Color3.fromRGB(190, 181, 245),
+	Checkmark = Color3.fromRGB(251, 249, 255),
+	Surface0 = Color3.fromRGB(238, 236, 245),
+	Surface1 = Color3.fromRGB(246, 244, 251),
+	Surface2 = Color3.fromRGB(225, 220, 237),
+	Surface3 = Color3.fromRGB(202, 196, 220),
+	TabBar = Color3.fromRGB(214, 208, 229),
+	Outline = Color3.fromRGB(155, 146, 179),
+	Text = Color3.fromRGB(44, 40, 60),
+	TextMuted = Color3.fromRGB(98, 92, 123),
 	Font = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 	FontBold = Font.new("rbxasset://fonts/families/Montserrat.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 	FontSemibold = Font.new(
@@ -64,6 +67,7 @@ end
 
 function Library:MakeDraggable(Instance, DragInstance, Cutoff)
 	Instance.Active = true
+	local DragSmoothness = 0.11
 
 	DragInstance.InputBegan:Connect(function(Input)
 		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -80,13 +84,18 @@ function Library:MakeDraggable(Instance, DragInstance, Cutoff)
 			local StartSize = Instance.AbsoluteSize
 
 			while UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
-				local Left = Mouse.X - ObjPos.X
-				local Top = Mouse.Y - ObjPos.Y
+				local TargetLeft = Mouse.X - ObjPos.X
+				local TargetTop = Mouse.Y - ObjPos.Y
 				local MaxX = math.max(0, ScreenGui.AbsoluteSize.X - StartSize.X)
 				local MaxY = math.max(0, ScreenGui.AbsoluteSize.Y - StartSize.Y)
 
-				Left = math.clamp(Left, 0, MaxX)
-				Top = math.clamp(Top, 0, MaxY)
+				TargetLeft = math.clamp(TargetLeft, 0, MaxX)
+				TargetTop = math.clamp(TargetTop, 0, MaxY)
+
+				local CurrentLeft = Instance.AbsolutePosition.X
+				local CurrentTop = Instance.AbsolutePosition.Y
+				local Left = CurrentLeft + ((TargetLeft - CurrentLeft) * DragSmoothness)
+				local Top = CurrentTop + ((TargetTop - CurrentTop) * DragSmoothness)
 
 				Instance.Position = UDim2.fromOffset(
 					Left + (StartSize.X * Instance.AnchorPoint.X),
@@ -458,7 +467,7 @@ function Library:CreateRowShell(Container)
 
 	local RowStroke = Library:Create("UIStroke", {
 		Color = Theme.Outline,
-		Transparency = 0.45,
+		Transparency = 0.62,
 		Thickness = 1,
 		Parent = RowCard,
 	})
@@ -486,7 +495,7 @@ function Library:AttachRowHover(RowFrame, RowStroke)
 		Hovering = IsHovering
 
 		local TargetBackground = IsHovering and Theme.Surface2 or Theme.Surface1
-		local TargetTransparency = IsHovering and 0.14 or 0.45
+		local TargetTransparency = IsHovering and 0.32 or 0.62
 		local TargetStrokeColor = IsHovering and Theme.AccentSoft or Theme.Outline
 		local TargetScale = IsHovering and 1.015 or 1
 
@@ -578,7 +587,7 @@ function Functions:AddButton(Text, Function)
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		Color = Theme.AccentSoft,
 		Thickness = 1,
-		Transparency = 0.45,
+		Transparency = 0.62,
 		Parent = ClickButton,
 	})
 	Library:RegisterThemeBinding(ButtonStroke, "Color", "AccentSoft")
@@ -614,11 +623,11 @@ function Functions:AddButton(Text, Function)
 	Library:AttachRowHover(ButtonFrame, ButtonFrameStroke)
 
 	ClickButton.MouseEnter:Connect(function()
-		TweenService:Create(ButtonStroke, TweenInfo.new(0.15), { Transparency = 0, Thickness = 1.5 }):Play()
+		TweenService:Create(ButtonStroke, TweenInfo.new(0.15), { Transparency = 0.18, Thickness = 1.5 }):Play()
 	end)
 
 	ClickButton.MouseLeave:Connect(function()
-		TweenService:Create(ButtonStroke, TweenInfo.new(0.15), { Transparency = 0.45, Thickness = 1 }):Play()
+		TweenService:Create(ButtonStroke, TweenInfo.new(0.15), { Transparency = 0.62, Thickness = 1 }):Play()
 	end)
 
 	ClickButton.Activated:Connect(function()
@@ -698,11 +707,13 @@ function Functions:AddToggle(Name, Default, Function)
 	local ToggleTick = Library:Create("ImageLabel", {
 		AnchorPoint = Vector2.new(0, 0),
 		BackgroundTransparency = 1,
+		ImageColor3 = Theme.Checkmark,
 		ImageTransparency = 1,
 		Image = "rbxassetid://73965231027852",
 		Size = UDim2.fromScale(1, 1),
 		Parent = ToggleButton,
 	})
+	Library:RegisterThemeBinding(ToggleTick, "ImageColor3", "Checkmark")
 
 	local ToggleCorner = Library:Create("UICorner", {
 		CornerRadius = UDim.new(0.23, 0),
@@ -712,6 +723,7 @@ function Functions:AddToggle(Name, Default, Function)
 	local ToggleStroke = Library:Create("UIStroke", {
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		Color = Theme.Outline,
+		Transparency = 0.42,
 		Thickness = 1.5,
 		Parent = ToggleButton,
 	})
@@ -721,13 +733,13 @@ function Functions:AddToggle(Name, Default, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Color3.fromRGB(255, 255, 255) })
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Color3.fromRGB(78, 84, 95) })
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
 				:Play()
 		end
 	end
@@ -835,11 +847,13 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 	local ToggleTick = Library:Create("ImageLabel", {
 		AnchorPoint = Vector2.new(0, 0),
 		BackgroundTransparency = 1,
+		ImageColor3 = Theme.Checkmark,
 		ImageTransparency = 1,
 		Image = "rbxassetid://73965231027852",
 		Size = UDim2.fromScale(1, 1),
 		Parent = ToggleButton,
 	})
+	Library:RegisterThemeBinding(ToggleTick, "ImageColor3", "Checkmark")
 
 	local ToggleCorner = Library:Create("UICorner", {
 		CornerRadius = UDim.new(0.23, 0),
@@ -849,6 +863,7 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 	local ToggleStroke = Library:Create("UIStroke", {
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		Color = Theme.Outline,
+		Transparency = 0.42,
 		Thickness = 1.5,
 		Parent = ToggleButton,
 	})
@@ -880,7 +895,7 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 
 	Library:Create("UIStroke", {
 		Color = Theme.Outline,
-		Transparency = 0.35,
+		Transparency = 0.58,
 		Thickness = 1,
 		Parent = InputBox,
 	})
@@ -909,13 +924,13 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Color3.fromRGB(255, 255, 255) })
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Color3.fromRGB(78, 84, 95) })
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
 				:Play()
 		end
 	end
@@ -1077,7 +1092,7 @@ function Functions:AddDropdown(Name, Info, Function)
 
 	Library:Create("UIStroke", {
 		Color = Theme.Outline,
-		Transparency = 0.2,
+		Transparency = 0.48,
 		Thickness = 1,
 		Parent = DropdownHolder,
 	})
@@ -1218,23 +1233,17 @@ function Functions:AddDropdown(Name, Info, Function)
 			Count = Count + 1
 
 			local SelectionButton = Library:Create("Frame", {
-				BackgroundColor3 = Color3.fromRGB(65, 67, 72),
+				BackgroundColor3 = Theme.Surface2,
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 0, 35),
 				ZIndex = 1,
 				Active = true,
 				Parent = DropdownList,
 			})
+			Library:RegisterThemeBinding(SelectionButton, "BackgroundColor3", "Surface2")
 
 			local SelectionCorner = Library:Create("UICorner", {
 				CornerRadius = UDim.new(0.15, 0),
-				Parent = SelectionButton,
-			})
-
-			Library:Create("UIStroke", {
-				Color = Theme.Outline,
-				Transparency = 0.55,
-				Thickness = 1,
 				Parent = SelectionButton,
 			})
 
@@ -1540,7 +1549,7 @@ function Functions:AddInput(Name, Info, Function)
 
 	Library:Create("UIStroke", {
 		Color = Theme.Outline,
-		Transparency = 0.35,
+		Transparency = 0.58,
 		Thickness = 1,
 		Parent = InputBox,
 	})
@@ -1720,7 +1729,7 @@ function Functions:AddSlider(Name, Info, Function)
 		Selectable = true,
 		ImageColor3 = Theme.Accent,
 		Size = UDim2.new(0.35, 0, 0.35, 0),
-		Image = "rbxassetid://4504304159",
+		Image = "rbxassetid://10033707044",
 		Parent = Dot,
 	})
 	Library:RegisterThemeBinding(Circle, "ImageColor3", "Accent")
@@ -2080,7 +2089,7 @@ function Functions:AddColorPicker(Name, Info, Function)
 
 	Library:Create("UIStroke", {
 		Color = Theme.Outline,
-		Transparency = 0.35,
+		Transparency = 0.58,
 		Thickness = 1,
 		Parent = ValueBox,
 	})
@@ -2111,7 +2120,7 @@ function Functions:AddColorPicker(Name, Info, Function)
 	local ColorPickerBox = Library:Create("Frame", {
 		Active = true,
 		Name = "ColorBox",
-		BackgroundColor3 = Color3.fromRGB(57, 58, 62),
+		BackgroundColor3 = Theme.Surface1,
 		BorderSizePixel = 0,
 		LayoutOrder = 1,
 		ZIndex = 2,
@@ -2119,11 +2128,20 @@ function Functions:AddColorPicker(Name, Info, Function)
 		Visible = false,
 		Parent = ScreenGui,
 	})
+	Library:RegisterThemeBinding(ColorPickerBox, "BackgroundColor3", "Surface1")
 
 	local ColorPickerCorner = Library:Create("UICorner", {
 		CornerRadius = UDim.new(0.025, 0),
 		Parent = ColorPickerBox,
 	})
+
+	local ColorPickerStroke = Library:Create("UIStroke", {
+		Color = Theme.Outline,
+		Transparency = 0.48,
+		Thickness = 1,
+		Parent = ColorPickerBox,
+	})
+	Library:RegisterThemeBinding(ColorPickerStroke, "Color", "Outline")
 
 	local Saturation = Library:Create("Frame", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
@@ -2144,13 +2162,14 @@ function Functions:AddColorPicker(Name, Info, Function)
 	})
 
 	local Hue = Library:Create("Frame", {
-		BackgroundColor3 = Color3.fromRGB(57, 58, 62),
+		BackgroundColor3 = Theme.Surface2,
 		BorderSizePixel = 0,
 		Position = UDim2.new(-0.15, 0, 0, 0),
 		Size = UDim2.new(0, 33, 0, 260),
 		ZIndex = 2,
 		Parent = ColorPickerBox,
 	})
+	Library:RegisterThemeBinding(Hue, "BackgroundColor3", "Surface2")
 
 	local HueCorner = Library:Create("UICorner", {
 		CornerRadius = UDim.new(0.2, 0),
@@ -2377,7 +2396,7 @@ function Functions:AddSection(Name, Info)
 	Library:Create("UIStroke", {
 		Color = Info.StrokeColor or Theme.Outline,
 		Thickness = 1,
-		Transparency = 0.35,
+		Transparency = 0.58,
 		Parent = SectionFrame,
 	})
 
@@ -2562,6 +2581,9 @@ function Library:CreateWindow(...)
 	if typeof(Config.AccentColor) == "Color3" then
 		ThemeOverrides.Accent = Config.AccentColor
 	end
+	if typeof(Config.CheckmarkColor) == "Color3" then
+		ThemeOverrides.Checkmark = Config.CheckmarkColor
+	end
 	if typeof(Config.TextColor) == "Color3" then
 		ThemeOverrides.Text = Config.TextColor
 	end
@@ -2579,6 +2601,9 @@ function Library:CreateWindow(...)
 	end
 	if typeof(Config.Surface3Color) == "Color3" then
 		ThemeOverrides.Surface3 = Config.Surface3Color
+	end
+	if typeof(Config.TabBarColor) == "Color3" then
+		ThemeOverrides.TabBar = Config.TabBarColor
 	end
 	if typeof(Config.OutlineColor) == "Color3" then
 		ThemeOverrides.Outline = Config.OutlineColor
@@ -2623,7 +2648,7 @@ function Library:CreateWindow(...)
 
 	local WindowFrame = Library:Create("Frame", {
 		AnchorPoint = Config.AnchorPoint,
-		BackgroundColor3 = Theme.Surface0,
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = Config.Position,
 		Size = UDim2.fromOffset(Config.Size.X, Config.Size.Y),
@@ -2631,6 +2656,19 @@ function Library:CreateWindow(...)
 		ClipsDescendants = false,
 		ZIndex = 1,
 		Parent = ScreenGui,
+	})
+
+	local WindowGroup = Library:Create("CanvasGroup", {
+		AnchorPoint = Vector2.zero,
+		BackgroundColor3 = Theme.Surface0,
+		GroupTransparency = 0,
+		BorderSizePixel = 0,
+		Position = UDim2.fromOffset(0, 0),
+		Size = UDim2.fromScale(1, 1),
+		Visible = true,
+		ClipsDescendants = false,
+		ZIndex = 1,
+		Parent = WindowFrame,
 	})
 
 	Window._WindowFrame = WindowFrame
@@ -2644,27 +2682,22 @@ function Library:CreateWindow(...)
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Size = UDim2.fromScale(1, 1),
-		Parent = WindowFrame,
-	})
-
-	Library:Create("UICorner", {
-		CornerRadius = UDim.new(0, 8),
-		Parent = WindowFrame,
+		Parent = WindowGroup,
 	})
 
 	Library:Create("UIStroke", {
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		LineJoinMode = Enum.LineJoinMode.Miter,
 		Color = ThemeOverrides.BorderColor or Theme.Outline,
-		Transparency = 0.15,
+		Transparency = 0.34,
 		Thickness = 1,
-		Parent = WindowFrame,
+		Parent = WindowGroup,
 	})
 
 	-- Tabs --
 
 	local TabsList = Library:Create("ScrollingFrame", {
-		BackgroundColor3 = Color3.fromRGB(20, 22, 26),
+		BackgroundColor3 = Theme.TabBar,
 		BorderSizePixel = 0,
 		Position = UDim2.new(0, 0, 0, 0),
 		Size = UDim2.new(0, Config.TabBarWidth, 1, 0),
@@ -2682,7 +2715,7 @@ function Library:CreateWindow(...)
 	local TabsListStroke = Library:Create("UIStroke", {
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		Color = Theme.Outline,
-		Transparency = 0.55,
+		Transparency = 0.72,
 		Thickness = 1,
 		Parent = TabsList,
 	})
@@ -2691,7 +2724,7 @@ function Library:CreateWindow(...)
 	local TabsRightDivider = Library:Create("Frame", {
 		AnchorPoint = Vector2.new(1, 0),
 		BackgroundColor3 = Theme.Outline,
-		BackgroundTransparency = 0.3,
+		BackgroundTransparency = 0.58,
 		BorderSizePixel = 0,
 		Position = UDim2.new(1, 0, 0, 0),
 		Size = UDim2.new(0, 1, 1, 0),
@@ -3278,10 +3311,10 @@ function Library:CreateWindow(...)
 		return Tab
 	end
 
-	-- Register theme update functions for all window elements
+		-- Register theme update functions for all window elements
 	local function UpdateColors()
 		if Window._WindowFrame then
-			Window._WindowFrame.BackgroundColor3 = Theme.Surface0
+			WindowGroup.BackgroundColor3 = Theme.Surface0
 		end
 		if Window._Header then
 			Window._Header.BackgroundColor3 = Theme.Surface1
@@ -3305,7 +3338,7 @@ function Library:CreateWindow(...)
 			Window._ToggleIcon.ImageColor3 = Theme.TextMuted
 		end
 		if Window._TabsList then
-			Window._TabsList.BackgroundColor3 = Color3.fromRGB(20, 22, 26)
+			Window._TabsList.BackgroundColor3 = Theme.TabBar
 		end
 		if Window._StatusBar then
 			Window._StatusBar.BackgroundColor3 = Theme.Surface1
@@ -3373,18 +3406,24 @@ function Library:CreateWindow(...)
 
 		if IsWindowOpen then
 			CloseVisibleFrames()
+			TweenService:Create(WindowGroup, ToggleTweenInfo, { GroupTransparency = 1 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = ClosedWindowScale }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
 				WindowFrame.Visible = false
+				WindowGroup.GroupTransparency = 1
 				IsWindowOpen = false
 				IsWindowAnimating = false
 			end)
 		else
 			WindowFrame.Visible = true
+			WindowGroup.GroupTransparency = 1
+			WindowScale.Scale = ClosedWindowScale
+			TweenService:Create(WindowGroup, ToggleTweenInfo, { GroupTransparency = 0 }):Play()
 			TweenService:Create(WindowScale, ToggleTweenInfo, { Scale = 1 }):Play()
 
 			task.delay(ToggleTweenInfo.Time, function()
+				WindowGroup.GroupTransparency = 0
 				IsWindowOpen = true
 				IsWindowAnimating = false
 			end)
