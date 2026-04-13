@@ -258,18 +258,23 @@ end
 
 local function MergeThemePresets(presets)
 	if type(presets) ~= "table" then
-		return
+		return 0
 	end
 
+	local mergedCount = 0
 	for presetName, presetValues in next, presets do
 		if type(presetName) == "string" and type(presetValues) == "table" then
 			ThemePresets[presetName] = CopyThemeDefinition(presetValues)
+			mergedCount += 1
 		end
 	end
+
+	return mergedCount
 end
 
 local function LoadRemoteThemePresets()
 	if type(loadstring) ~= "function" then
+		warn("[Midnight] Remote themes were not loaded because loadstring is unavailable.")
 		return
 	end
 
@@ -277,6 +282,7 @@ local function LoadRemoteThemePresets()
 		return game:HttpGet(RemoteThemePresetUrl)
 	end)
 	if not success or type(result) ~= "string" or result == "" then
+		warn("[Midnight] Failed to fetch remote themes from " .. tostring(RemoteThemePresetUrl))
 		return
 	end
 
@@ -284,10 +290,12 @@ local function LoadRemoteThemePresets()
 		return loadstring(result)()
 	end)
 	if not chunkSuccess or type(presets) ~= "table" then
+		warn("[Midnight] Remote theme file loaded but did not return a valid preset table.")
 		return
 	end
 
-	MergeThemePresets(presets)
+	local mergedCount = MergeThemePresets(presets)
+	warn(string.format("[Midnight] Loaded %d remote theme presets.", mergedCount))
 end
 
 LoadRemoteThemePresets()
