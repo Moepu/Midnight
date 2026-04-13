@@ -48,6 +48,7 @@ local Theme = {
 }
 
 local ThemePresetFile = "MidnightTheme.json"
+local RemoteThemePresetUrl = "https://raw.githubusercontent.com/Moepu/Midnight/main/Themes.lua"
 local ThemePresets = {
 	["Lavender Slate"] = {
 		Accent = Color3.fromRGB(133, 118, 224),
@@ -245,7 +246,7 @@ local ThemePresets = {
 		Text = Color3.fromRGB(241, 232, 228),
 		TextMuted = Color3.fromRGB(173, 160, 156),
 	},
-}
+	}
 
 local function CopyThemeDefinition(Definition)
 	local Copy = {}
@@ -254,6 +255,42 @@ local function CopyThemeDefinition(Definition)
 	end
 	return Copy
 end
+
+local function MergeThemePresets(presets)
+	if type(presets) ~= "table" then
+		return
+	end
+
+	for presetName, presetValues in next, presets do
+		if type(presetName) == "string" and type(presetValues) == "table" then
+			ThemePresets[presetName] = CopyThemeDefinition(presetValues)
+		end
+	end
+end
+
+local function LoadRemoteThemePresets()
+	if type(loadstring) ~= "function" then
+		return
+	end
+
+	local success, result = pcall(function()
+		return game:HttpGet(RemoteThemePresetUrl)
+	end)
+	if not success or type(result) ~= "string" or result == "" then
+		return
+	end
+
+	local chunkSuccess, presets = pcall(function()
+		return loadstring(result)()
+	end)
+	if not chunkSuccess or type(presets) ~= "table" then
+		return
+	end
+
+	MergeThemePresets(presets)
+end
+
+LoadRemoteThemePresets()
 
 local function LoadSavedThemePreset()
 	if type(isfile) ~= "function" or type(readfile) ~= "function" then
@@ -305,7 +342,7 @@ end
 
 function Library:MakeDraggable(Instance, DragInstance, Cutoff)
 	Instance.Active = true
-	local DragSmoothness = 0.15
+	local DragSmoothness = 0.11
 
 	DragInstance.InputBegan:Connect(function(Input)
 		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -971,21 +1008,13 @@ function Functions:AddToggle(Name, Default, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(
-					ToggleStroke,
-					TweenInfo.new(0.15),
-					{ Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 }
-				)
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(
-					ToggleStroke,
-					TweenInfo.new(0.15),
-					{ Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 }
-				)
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
 				:Play()
 		end
 	end
@@ -1170,21 +1199,13 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 0 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 0 }):Play()
 			TweenService
-				:Create(
-					ToggleStroke,
-					TweenInfo.new(0.15),
-					{ Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 }
-				)
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 2, Color = Theme.Checkmark, Transparency = 0.12 })
 				:Play()
 		else
 			TweenService:Create(ToggleTick, TweenInfo.new(0.15), { ImageTransparency = 1 }):Play()
 			TweenService:Create(ToggleButton, TweenInfo.new(0.15), { BackgroundTransparency = 1 }):Play()
 			TweenService
-				:Create(
-					ToggleStroke,
-					TweenInfo.new(0.15),
-					{ Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 }
-				)
+				:Create(ToggleStroke, TweenInfo.new(0.15), { Thickness = 1.5, Color = Theme.Outline, Transparency = 0.42 })
 				:Play()
 		end
 	end
@@ -1272,14 +1293,14 @@ function Functions:AddToggleAndInput(Name, Info, Function)
 end
 
 function Functions:AddDropdown(Name, Info, Function)
-	local Dropdown = {
-		Values = Info.Values,
-		Value = Info.Multi and {},
-		Multi = Info.Multi,
-		MaxShow = Info.Multi and math.max(2, Info.MaxShow or 3) or (Info.MaxShow or 3),
-		AllowNull = Info.AllowNull or false,
-		MaxItems = Info.MaxItems or 5,
-	}
+		local Dropdown = {
+			Values = Info.Values,
+			Value = Info.Multi and {},
+			Multi = Info.Multi,
+			MaxShow = Info.Multi and math.max(2, Info.MaxShow or 3) or (Info.MaxShow or 3),
+			AllowNull = Info.AllowNull or false,
+			MaxItems = Info.MaxItems or 5,
+		}
 
 	local Container = self.Container
 	local DropdownShell, DropdownFrame, DropdownFrameStroke = Library:CreateRowShell(Container)
@@ -1295,20 +1316,20 @@ function Functions:AddDropdown(Name, Info, Function)
 	})
 	Library:RegisterThemeBinding(DropdownUnderline, "BackgroundColor3", "Accent")
 
-	local Option = Library:Create("TextLabel", {
-		BackgroundTransparency = 1,
-		AnchorPoint = Vector2.new(0, 0.5),
-		Size = UDim2.new(1, -240, 0, 24),
-		Position = UDim2.new(0, 20, 0.5, 0),
-		Text = Name or "Empty",
-		TextColor3 = Theme.Text,
-		TextSize = 18,
-		TextTruncate = Enum.TextTruncate.AtEnd,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		FontFace = Theme.Font,
-		ZIndex = 1,
-		Parent = DropdownFrame,
-	})
+		local Option = Library:Create("TextLabel", {
+			BackgroundTransparency = 1,
+			AnchorPoint = Vector2.new(0, 0.5),
+			Size = UDim2.new(1, -240, 0, 24),
+			Position = UDim2.new(0, 20, 0.5, 0),
+			Text = Name or "Empty",
+			TextColor3 = Theme.Text,
+			TextSize = 18,
+			TextTruncate = Enum.TextTruncate.AtEnd,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			FontFace = Theme.Font,
+			ZIndex = 1,
+			Parent = DropdownFrame,
+		})
 	Library:RegisterThemeBinding(Option, "TextColor3", "Text")
 
 	local OptionPadding = Library:Create("UIPadding", {
@@ -1384,13 +1405,13 @@ function Functions:AddDropdown(Name, Info, Function)
 		Parent = DropdownList,
 	})
 
-	local DropdownValue = Library:Create("TextLabel", {
-		BackgroundTransparency = 1,
-		AnchorPoint = Vector2.new(1, 0.5),
-		Size = UDim2.new(0, 150, 0, 24),
-		Position = UDim2.new(1, -48, 0.5, 0),
-		Text = "...",
-		TextColor3 = Theme.TextMuted,
+		local DropdownValue = Library:Create("TextLabel", {
+			BackgroundTransparency = 1,
+			AnchorPoint = Vector2.new(1, 0.5),
+			Size = UDim2.new(0, 150, 0, 24),
+			Position = UDim2.new(1, -48, 0.5, 0),
+			Text = "...",
+			TextColor3 = Theme.TextMuted,
 		RichText = true,
 		TextTruncate = Enum.TextTruncate.AtEnd,
 		TextSize = 15,
@@ -3785,7 +3806,7 @@ function Library:CreateWindow(...)
 		return Tab
 	end
 
-	-- Register theme update functions for all window elements
+		-- Register theme update functions for all window elements
 	local function UpdateColors()
 		if Window._WindowFrame then
 			Window._WindowFrame.BackgroundColor3 = Theme.Surface0
