@@ -305,7 +305,7 @@ end
 
 function Library:MakeDraggable(Instance, DragInstance, Cutoff)
 	Instance.Active = true
-	local DragSmoothness = 0.11
+	local DragSmoothness = 0.15
 
 	DragInstance.InputBegan:Connect(function(Input)
 		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
